@@ -1,6 +1,6 @@
 /* Autogenic Training PWA service worker.
  * SHELL (versioned app files) + AUDIO (persistent recordings). */
-const SHELL = 'at-shell-v4';
+const SHELL = 'at-shell-v5';
 const AUDIO = 'at-audio';
 const SHELL_ASSETS = ['./','./index.html','./app.css','./app.js','./manifest.json','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./icons/favicon-32.png'];
 

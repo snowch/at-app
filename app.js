@@ -111,7 +111,9 @@ function updateProgress(){
   const exs = DATA.items.filter(it=>it.type==='exercise');
   const done = exs.filter(it=>state.ready[it.id]).length;
   fillEl.style.width = (exs.length ? Math.round(done/exs.length*100) : 0)+'%';
-  labelEl.textContent = `${done} of ${exs.length} exercises marked ready`;
+  labelEl.textContent = done === 0
+    ? `Your progress · start with Exercise 1, Heaviness`
+    : `Your progress · ${done} of ${exs.length} exercises worked through`;
   progressEl.hidden = false;
 }
 function refreshCards(){
