@@ -162,13 +162,22 @@
       ],
       "parts": {
         "orientation": {
-          "status": "planned"
+          "script": "content/at_20_warmth_orientation.txt",
+          "audio": "audio/at_20_warmth_orientation.m4a?v=f319f86c",
+          "durationSec": 107.6,
+          "status": "built"
         },
         "guided": {
-          "status": "planned"
+          "script": "content/at_20_warmth_guided.txt",
+          "audio": "audio/at_20_warmth_guided.m4a?v=12b77c90",
+          "durationSec": 143.8,
+          "status": "built"
         },
         "timed": {
-          "status": "planned"
+          "script": "content/at_20_warmth_timed.txt",
+          "audio": "audio/at_20_warmth_timed.m4a?v=aa196afc",
+          "durationSec": 89.6,
+          "status": "built"
         },
         "silence": {
           "shared": "silence",
@@ -192,13 +201,22 @@
       ],
       "parts": {
         "orientation": {
-          "status": "planned"
+          "script": "content/at_30_heartbeat_orientation.txt",
+          "audio": "audio/at_30_heartbeat_orientation.m4a?v=858d9588",
+          "durationSec": 115.1,
+          "status": "built"
         },
         "guided": {
-          "status": "planned"
+          "script": "content/at_30_heartbeat_guided.txt",
+          "audio": "audio/at_30_heartbeat_guided.m4a?v=8dea59ef",
+          "durationSec": 155.5,
+          "status": "built"
         },
         "timed": {
-          "status": "planned"
+          "script": "content/at_30_heartbeat_timed.txt",
+          "audio": "audio/at_30_heartbeat_timed.m4a?v=37e14f05",
+          "durationSec": 91.9,
+          "status": "built"
         },
         "silence": {
           "shared": "silence",
@@ -222,13 +240,22 @@
       ],
       "parts": {
         "orientation": {
-          "status": "planned"
+          "script": "content/at_35_neck-shoulders_orientation.txt",
+          "audio": "audio/at_35_neck-shoulders_orientation.m4a?v=f03f85d3",
+          "durationSec": 116.3,
+          "status": "built"
         },
         "guided": {
-          "status": "planned"
+          "script": "content/at_35_neck-shoulders_guided.txt",
+          "audio": "audio/at_35_neck-shoulders_guided.m4a?v=9855533f",
+          "durationSec": 131.4,
+          "status": "built"
         },
         "timed": {
-          "status": "planned"
+          "script": "content/at_35_neck-shoulders_timed.txt",
+          "audio": "audio/at_35_neck-shoulders_timed.m4a?v=ff848bed",
+          "durationSec": 81.8,
+          "status": "built"
         },
         "silence": {
           "shared": "silence",
@@ -252,13 +279,22 @@
       ],
       "parts": {
         "orientation": {
-          "status": "planned"
+          "script": "content/at_40_breathing_orientation.txt",
+          "audio": "audio/at_40_breathing_orientation.m4a?v=7be80991",
+          "durationSec": 93.5,
+          "status": "built"
         },
         "guided": {
-          "status": "planned"
+          "script": "content/at_40_breathing_guided.txt",
+          "audio": "audio/at_40_breathing_guided.m4a?v=36a4e5ab",
+          "durationSec": 124.2,
+          "status": "built"
         },
         "timed": {
-          "status": "planned"
+          "script": "content/at_40_breathing_timed.txt",
+          "audio": "audio/at_40_breathing_timed.m4a?v=d6bfa0ee",
+          "durationSec": 94.6,
+          "status": "built"
         },
         "silence": {
           "shared": "silence",
@@ -283,13 +319,22 @@
       ],
       "parts": {
         "orientation": {
-          "status": "planned"
+          "script": "content/at_50_solar-plexus_orientation.txt",
+          "audio": "audio/at_50_solar-plexus_orientation.m4a?v=c11fc667",
+          "durationSec": 93.5,
+          "status": "built"
         },
         "guided": {
-          "status": "planned"
+          "script": "content/at_50_solar-plexus_guided.txt",
+          "audio": "audio/at_50_solar-plexus_guided.m4a?v=6c451590",
+          "durationSec": 129.5,
+          "status": "built"
         },
         "timed": {
-          "status": "planned"
+          "script": "content/at_50_solar-plexus_timed.txt",
+          "audio": "audio/at_50_solar-plexus_timed.m4a?v=907076b5",
+          "durationSec": 95.6,
+          "status": "built"
         },
         "silence": {
           "shared": "silence",
@@ -313,13 +358,22 @@
       ],
       "parts": {
         "orientation": {
-          "status": "planned"
+          "script": "content/at_60_forehead_orientation.txt",
+          "audio": "audio/at_60_forehead_orientation.m4a?v=0bfdebdf",
+          "durationSec": 96.8,
+          "status": "built"
         },
         "guided": {
-          "status": "planned"
+          "script": "content/at_60_forehead_guided.txt",
+          "audio": "audio/at_60_forehead_guided.m4a?v=020b3b12",
+          "durationSec": 133.9,
+          "status": "built"
         },
         "timed": {
-          "status": "planned"
+          "script": "content/at_60_forehead_timed.txt",
+          "audio": "audio/at_60_forehead_timed.m4a?v=9c086bb5",
+          "durationSec": 96.8,
+          "status": "built"
         },
         "silence": {
           "shared": "silence",
@@ -336,7 +390,10 @@
       "type": "orientation",
       "parts": {
         "teaching": {
-          "status": "planned"
+          "script": "content/at_70_short-forms.txt",
+          "audio": "audio/at_70_short-forms.m4a?v=e60d37ba",
+          "durationSec": 95.9,
+          "status": "built"
         }
       }
     },
@@ -347,7 +404,10 @@
       "type": "orientation",
       "parts": {
         "teaching": {
-          "status": "planned"
+          "script": "content/at_80_intentional-formulae.txt",
+          "audio": "audio/at_80_intentional-formulae.m4a?v=c0112aae",
+          "durationSec": 99.4,
+          "status": "built"
         }
       }
     }
