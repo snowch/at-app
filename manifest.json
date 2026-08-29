@@ -1,0 +1,355 @@
+{
+  "programme": "Autogenic Training \u2014 a self-directed progression",
+  "goal": "Learn to reach deep calm on command, unaided \u2014 the six standard exercises over ~10 weeks.",
+  "voices": {
+    "teaching": {
+      "voice": "af_heart",
+      "speed": 0.75,
+      "renderer": "tools/intro.py"
+    },
+    "guided": {
+      "voice": "af_nicole",
+      "speed": 0.85,
+      "renderer": "tools/pp.py"
+    }
+  },
+  "corePrinciple": "Passive concentration \u2014 hold the formula lightly, want nothing, let it come.",
+  "close": [
+    "Say: Arms firm. Breathe deeply. Eyes open.",
+    "Make fists and release, firmly, 3\u20134\u00d7",
+    "Bend and straighten the arms, 2\u20133\u00d7",
+    "One deep breath",
+    "Open the eyes"
+  ],
+  "progressionCriteria": [
+    "The sensation arises without effort (it comes on its own).",
+    "It arrives reasonably promptly (within 30\u201360s, most times).",
+    "It is reasonably consistent (in about two-thirds of sessions over a week).",
+    "You are not straining (you can hold the formula with genuine indifference)."
+  ],
+  "frequency": "Three times a day, every day. Minimum one week per exercise; reassess at three.",
+  "sharedTracks": {
+    "silence": {
+      "audio": "audio/at_silent-practice.m4a?v=7d372c13",
+      "label": "Silent practice",
+      "hint": "chime \u00b7 silence \u00b7 chime \u00b7 close",
+      "durationSec": 202.9
+    }
+  },
+  "items": [
+    {
+      "seq": "00",
+      "id": "welcome",
+      "title": "Welcome to the programme",
+      "type": "orientation",
+      "parts": {
+        "teaching": {
+          "script": "content/at_00_welcome.txt",
+          "audio": "audio/at_00_welcome.m4a?v=5f081257",
+          "durationSec": 120.7,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "01",
+      "id": "passive-concentration",
+      "title": "Passive concentration \u2014 the core skill",
+      "type": "orientation",
+      "parts": {
+        "teaching": {
+          "script": "content/at_01_passive-concentration.txt",
+          "audio": "audio/at_01_passive-concentration.m4a?v=5625fd74",
+          "durationSec": 120.8,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "02",
+      "id": "the-session",
+      "title": "The shape of a session",
+      "type": "orientation",
+      "parts": {
+        "teaching": {
+          "script": "content/at_02_the-session.txt",
+          "audio": "audio/at_02_the-session.m4a?v=98e11b3e",
+          "durationSec": 116.9,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "03",
+      "id": "the-close",
+      "title": "The close (cancellation)",
+      "type": "orientation",
+      "parts": {
+        "teaching": {
+          "script": "content/at_03_the-close.txt",
+          "audio": "audio/at_03_the-close.m4a?v=a617202e",
+          "durationSec": 100.4,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "04",
+      "id": "safety",
+      "title": "Safety \u2014 read before you begin",
+      "type": "orientation",
+      "safety": true,
+      "parts": {
+        "teaching": {
+          "script": "content/at_04_safety.txt",
+          "audio": "audio/at_04_safety.m4a?v=7766d4d4",
+          "durationSec": 140.0,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "10",
+      "id": "heaviness",
+      "title": "Heaviness",
+      "type": "exercise",
+      "exercise": 1,
+      "week": 1,
+      "formula": "My right arm is heavy",
+      "expands": "dominant arm \u2192 other arm \u2192 both arms \u2192 legs \u2192 arms and legs are heavy",
+      "prerequisites": [
+        "The framework teachings (00\u201304)",
+        "A comfortable posture \u2014 see 'The shape of a session'"
+      ],
+      "parts": {
+        "orientation": {
+          "script": "content/at_10_heaviness_orientation.txt",
+          "audio": "audio/at_10_heaviness_orientation.m4a?v=a7171eaa",
+          "durationSec": 110.0,
+          "status": "built"
+        },
+        "guided": {
+          "script": "content/at_10_heaviness_guided.txt",
+          "audio": "audio/at_10_heaviness_guided.m4a?v=95b171ab",
+          "durationSec": 238.9,
+          "status": "built"
+        },
+        "timed": {
+          "script": "content/at_10_heaviness_timed.txt",
+          "audio": "audio/at_10_heaviness_timed.m4a?v=673e2152",
+          "durationSec": 128.9,
+          "status": "built"
+        },
+        "silence": {
+          "shared": "silence",
+          "audio": "audio/at_silent-practice.m4a?v=7d372c13",
+          "durationSec": 202.9,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "20",
+      "id": "warmth",
+      "title": "Warmth",
+      "type": "exercise",
+      "exercise": 2,
+      "week": 3,
+      "formula": "My right arm is warm",
+      "caution": "Avoid directing warmth to any area of acute inflammation, injury, or infection.",
+      "prerequisites": [
+        "Heaviness (Exercise 1) reliable"
+      ],
+      "parts": {
+        "orientation": {
+          "status": "planned"
+        },
+        "guided": {
+          "status": "planned"
+        },
+        "timed": {
+          "status": "planned"
+        },
+        "silence": {
+          "shared": "silence",
+          "audio": "audio/at_silent-practice.m4a?v=7d372c13",
+          "durationSec": 202.9,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "30",
+      "id": "heartbeat",
+      "title": "Heartbeat",
+      "type": "exercise",
+      "exercise": 3,
+      "week": 5,
+      "formula": "My heartbeat is calm and regular",
+      "caution": "Consult a doctor first with any cardiac condition. Skip or defer if attending to the heart raises anxiety. Never try to slow it \u2014 'calm and regular', not 'slow'.",
+      "prerequisites": [
+        "Warmth (Exercise 2) reliable"
+      ],
+      "parts": {
+        "orientation": {
+          "status": "planned"
+        },
+        "guided": {
+          "status": "planned"
+        },
+        "timed": {
+          "status": "planned"
+        },
+        "silence": {
+          "shared": "silence",
+          "audio": "audio/at_silent-practice.m4a?v=7d372c13",
+          "durationSec": 202.9,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "35",
+      "id": "neck-shoulders",
+      "title": "Neck and shoulders",
+      "type": "exercise",
+      "exercise": "3a",
+      "week": 5,
+      "formula": "My neck and shoulders are heavy",
+      "note": "Not a ladder rung \u2014 a suffix. Once learned it holds the end of the sequence; every later exercise is inserted ahead of it. Three repetitions.",
+      "prerequisites": [
+        "Heartbeat introduced (give it 3\u20134 days first)"
+      ],
+      "parts": {
+        "orientation": {
+          "status": "planned"
+        },
+        "guided": {
+          "status": "planned"
+        },
+        "timed": {
+          "status": "planned"
+        },
+        "silence": {
+          "shared": "silence",
+          "audio": "audio/at_silent-practice.m4a?v=7d372c13",
+          "durationSec": 202.9,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "40",
+      "id": "breathing",
+      "title": "Breathing",
+      "type": "exercise",
+      "exercise": 4,
+      "week": 6,
+      "formula": "It breathes me",
+      "note": "The agent is deliberately removed. The moment you take charge of the breath, it has failed.",
+      "prerequisites": [
+        "Heartbeat & neck/shoulders reliable"
+      ],
+      "parts": {
+        "orientation": {
+          "status": "planned"
+        },
+        "guided": {
+          "status": "planned"
+        },
+        "timed": {
+          "status": "planned"
+        },
+        "silence": {
+          "shared": "silence",
+          "audio": "audio/at_silent-practice.m4a?v=7d372c13",
+          "durationSec": 202.9,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "50",
+      "id": "solar-plexus",
+      "title": "Solar plexus (warm centre)",
+      "type": "exercise",
+      "exercise": 5,
+      "week": 7,
+      "formula": "My solar plexus is warm",
+      "skippable": true,
+      "caution": "Consult a doctor first with diabetes (abdominal warmth can alter insulin needs), active ulcers, acute abdominal conditions, recent abdominal surgery, or pregnancy. Can be omitted without breaking the sequence.",
+      "prerequisites": [
+        "Breathing (Exercise 4) reliable"
+      ],
+      "parts": {
+        "orientation": {
+          "status": "planned"
+        },
+        "guided": {
+          "status": "planned"
+        },
+        "timed": {
+          "status": "planned"
+        },
+        "silence": {
+          "shared": "silence",
+          "audio": "audio/at_silent-practice.m4a?v=7d372c13",
+          "durationSec": 202.9,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "60",
+      "id": "forehead",
+      "title": "Cool forehead",
+      "type": "exercise",
+      "exercise": 6,
+      "week": 8,
+      "formula": "My forehead is pleasantly cool",
+      "caution": "Approach cautiously with migraine or frequent headaches. Keep it brief \u2014 2\u20133 repetitions. Stop if it produces head pain. Do not drop the word 'pleasantly'.",
+      "prerequisites": [
+        "Solar plexus reached (or deliberately skipped)"
+      ],
+      "parts": {
+        "orientation": {
+          "status": "planned"
+        },
+        "guided": {
+          "status": "planned"
+        },
+        "timed": {
+          "status": "planned"
+        },
+        "silence": {
+          "shared": "silence",
+          "audio": "audio/at_silent-practice.m4a?v=7d372c13",
+          "durationSec": 202.9,
+          "status": "built"
+        }
+      }
+    },
+    {
+      "seq": "70",
+      "id": "short-forms",
+      "title": "Short & instant forms",
+      "type": "orientation",
+      "parts": {
+        "teaching": {
+          "status": "planned"
+        }
+      }
+    },
+    {
+      "seq": "80",
+      "id": "intentional-formulae",
+      "title": "After the six \u2014 intentional formulae",
+      "type": "orientation",
+      "parts": {
+        "teaching": {
+          "status": "planned"
+        }
+      }
+    }
+  ]
+}
