@@ -77,7 +77,7 @@ modal.onclick = (e)=>{ if(e.target===modal) closeModal(); };
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); } });
 
 $('closeBtn').onclick = ()=> openModal(
-  `<h3>The close</h3><p>Never skip this — it reverses the drop in arousal before you stand up.</p>` +
+  `<h3>The close</h3><p>Never skip this. The practice genuinely slows your body down; the close brings it back up before you stand, so you don't feel groggy or lightheaded.</p>` +
   `<ol>${DATA.close.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>` +
   `<p class="muted">The one exception: practising in bed to fall asleep — then you omit the close and let yourself drift.</p>`);
 $('principleBtn').onclick = ()=> openModal(
