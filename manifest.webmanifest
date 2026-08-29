@@ -2,6 +2,7 @@
   "name": "Autogenic Training — a self-directed progression",
   "short_name": "Autogenic",
   "description": "Learn the six standard exercises, one at a time, until you can reach deep calm on command — unaided.",
+  "id": "/at-app/",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
