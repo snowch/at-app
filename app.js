@@ -147,8 +147,8 @@ function card(item){
   let crit = '';
   if(isEx){
     const arr = state.crit[item.id] || [false,false,false,false];
-    crit = `<div class="crit"><span class="crit-label">Ready to move on when all four are true</span><ul>`+
-      DATA.progressionCriteria.map((c,i)=>`<li><button class="box ${arr[i]?'on':''}" data-ex="${item.id}" data-i="${i}">${arr[i]?'✓':''}</button><span>${esc(c)}</span></li>`).join('')+
+    crit = `<div class="crit"><span class="crit-label">Tick each as it becomes true — ready to move on when all four are</span><ul>`+
+      DATA.progressionCriteria.map((c,i)=>`<li class="crit-item" data-ex="${item.id}" data-i="${i}"><button class="box ${arr[i]?'on':''}" aria-label="toggle">${arr[i]?'✓':''}</button><span>${esc(c)}</span></li>`).join('')+
       `</ul><button class="ready-btn" data-ex="${item.id}"></button></div>`;
   }
   return `<article class="card ${item.type}" ${isEx?`data-ex="${item.id}"`:''}>`+
@@ -167,7 +167,7 @@ function renderLadder(){
   });
   ladderEl.innerHTML = html;
   ladderEl.querySelectorAll('.play[data-src]').forEach(b=> b.addEventListener('click',()=>startTrack(b)));
-  ladderEl.querySelectorAll('.box[data-ex]').forEach(b=> b.addEventListener('click',()=>toggleCrit(b.dataset.ex, +b.dataset.i, b)));
+  ladderEl.querySelectorAll('.crit-item').forEach(li=> li.addEventListener('click',()=>toggleCrit(li.dataset.ex, +li.dataset.i, li.querySelector('.box'))));
   ladderEl.querySelectorAll('.ready-btn[data-ex]').forEach(b=> b.addEventListener('click',()=>markReady(b.dataset.ex)));
   DATA.items.filter(it=>it.type==='exercise').forEach(it=>refreshReady(it.id));
   updateProgress(); refreshCards(); refreshOffline();

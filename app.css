@@ -94,8 +94,11 @@ span.play { cursor: default; opacity: .4; }
 .crit { margin: 12px 0 6px; padding: 12px; background: var(--bg-elev2); border-radius: 10px; border: 1px solid var(--line); }
 .crit ul { list-style: none; margin: 0; padding: 0; }
 .crit li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; font-size: .85rem; color: var(--muted); }
-.crit .box { flex: 0 0 auto; width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--line); background: transparent; cursor: pointer; color: transparent; font-size: .75rem; display: grid; place-items: center; margin-top: 1px; }
+.crit .box { flex: 0 0 auto; width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--accent); background: var(--bg); cursor: pointer; color: transparent; font-size: .8rem; font-weight: 700; display: grid; place-items: center; margin-top: 1px; transition: background .12s, transform .1s; }
+.crit .box:hover { background: var(--bg-elev); }
+.crit .box:active { transform: scale(.9); }
 .crit .box.on { background: linear-gradient(180deg, var(--cool), var(--warm)); color: #10141a; border-color: transparent; }
+.crit li { cursor: pointer; }
 .ready-btn { margin-top: 8px; width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg-elev); color: var(--faint); font-size: .85rem; cursor: pointer; }
 .ready-btn.armed { color: var(--text); border-color: var(--accent); }
 .ready-btn.done { background: linear-gradient(180deg, rgba(120,176,200,.25), rgba(224,170,110,.25)); color: var(--text); border-color: transparent; }
