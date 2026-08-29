@@ -19,9 +19,12 @@ DESIGN.md       build template and provenance
 
 ## The programme
 Five framework teachings (welcome · passive concentration · the session · the
-close · safety), then the six standard exercises + neck-and-shoulders, each with
-the **four-track fade** — orientation (hear once) → guided session → timed cues
-→ silent practice — so you end every stage practising it unaided.
+close · safety), then the six standard exercises + neck-and-shoulders. Each exercise has an
+**orientation** track (hear once) and a **session builder**: the app assembles
+each practice live from a small clip library, matched to your stage — the
+beginner **short exercise** (three cycles of the formula, each ending in a
+cancel; dominant limb first, expanding over the days) and, once you've learned a
+few, a cumulative **full session** with a single close.
 
 | # | Exercise | Formula | Week |
 |---|---|---|---|

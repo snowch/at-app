@@ -128,25 +128,34 @@
           "durationSec": 110.0,
           "status": "built"
         },
-        "guided": {
-          "script": "content/at_10_heaviness_guided.txt",
-          "audio": "audio/at_10_heaviness_guided.m4a?v=95b171ab",
-          "durationSec": 238.9,
-          "status": "built"
-        },
-        "timed": {
-          "script": "content/at_10_heaviness_timed.txt",
-          "audio": "audio/at_10_heaviness_timed.m4a?v=673e2152",
-          "durationSec": 128.9,
-          "status": "built"
-        },
         "silence": {
           "shared": "silence",
           "audio": "audio/at_silent-practice.m4a?v=7d372c13",
           "durationSec": 202.9,
           "status": "built"
         }
-      }
+      },
+      "stages": [
+        {
+          "label": "Dominant arm \u00b7 days 1\u20133",
+          "formulae": [
+            "hv_rarm"
+          ]
+        },
+        {
+          "label": "Both arms \u00b7 days 4\u20136",
+          "formulae": [
+            "hv_arms"
+          ]
+        },
+        {
+          "label": "Arms & legs \u00b7 days 7\u201314",
+          "formulae": [
+            "hv_all"
+          ]
+        }
+      ],
+      "collapsed": "hv_all"
     },
     {
       "seq": "20",
@@ -167,25 +176,34 @@
           "durationSec": 107.6,
           "status": "built"
         },
-        "guided": {
-          "script": "content/at_20_warmth_guided.txt",
-          "audio": "audio/at_20_warmth_guided.m4a?v=12b77c90",
-          "durationSec": 143.8,
-          "status": "built"
-        },
-        "timed": {
-          "script": "content/at_20_warmth_timed.txt",
-          "audio": "audio/at_20_warmth_timed.m4a?v=aa196afc",
-          "durationSec": 89.6,
-          "status": "built"
-        },
         "silence": {
           "shared": "silence",
           "audio": "audio/at_silent-practice.m4a?v=7d372c13",
           "durationSec": 202.9,
           "status": "built"
         }
-      }
+      },
+      "stages": [
+        {
+          "label": "Dominant arm",
+          "formulae": [
+            "wm_rarm"
+          ]
+        },
+        {
+          "label": "Both arms",
+          "formulae": [
+            "wm_arms"
+          ]
+        },
+        {
+          "label": "Arms & legs",
+          "formulae": [
+            "wm_all"
+          ]
+        }
+      ],
+      "collapsed": "wm_all"
     },
     {
       "seq": "30",
@@ -206,25 +224,22 @@
           "durationSec": 115.1,
           "status": "built"
         },
-        "guided": {
-          "script": "content/at_30_heartbeat_guided.txt",
-          "audio": "audio/at_30_heartbeat_guided.m4a?v=8dea59ef",
-          "durationSec": 155.5,
-          "status": "built"
-        },
-        "timed": {
-          "script": "content/at_30_heartbeat_timed.txt",
-          "audio": "audio/at_30_heartbeat_timed.m4a?v=37e14f05",
-          "durationSec": 91.9,
-          "status": "built"
-        },
         "silence": {
           "shared": "silence",
           "audio": "audio/at_silent-practice.m4a?v=7d372c13",
           "durationSec": 202.9,
           "status": "built"
         }
-      }
+      },
+      "stages": [
+        {
+          "label": "The heartbeat",
+          "formulae": [
+            "hb"
+          ]
+        }
+      ],
+      "collapsed": "hb"
     },
     {
       "seq": "35",
@@ -245,25 +260,22 @@
           "durationSec": 116.3,
           "status": "built"
         },
-        "guided": {
-          "script": "content/at_35_neck-shoulders_guided.txt",
-          "audio": "audio/at_35_neck-shoulders_guided.m4a?v=9855533f",
-          "durationSec": 131.4,
-          "status": "built"
-        },
-        "timed": {
-          "script": "content/at_35_neck-shoulders_timed.txt",
-          "audio": "audio/at_35_neck-shoulders_timed.m4a?v=ff848bed",
-          "durationSec": 81.8,
-          "status": "built"
-        },
         "silence": {
           "shared": "silence",
           "audio": "audio/at_silent-practice.m4a?v=7d372c13",
           "durationSec": 202.9,
           "status": "built"
         }
-      }
+      },
+      "stages": [
+        {
+          "label": "Neck & shoulders",
+          "formulae": [
+            "ns"
+          ]
+        }
+      ],
+      "collapsed": "ns"
     },
     {
       "seq": "40",
@@ -284,25 +296,22 @@
           "durationSec": 93.5,
           "status": "built"
         },
-        "guided": {
-          "script": "content/at_40_breathing_guided.txt",
-          "audio": "audio/at_40_breathing_guided.m4a?v=36a4e5ab",
-          "durationSec": 124.2,
-          "status": "built"
-        },
-        "timed": {
-          "script": "content/at_40_breathing_timed.txt",
-          "audio": "audio/at_40_breathing_timed.m4a?v=d6bfa0ee",
-          "durationSec": 94.6,
-          "status": "built"
-        },
         "silence": {
           "shared": "silence",
           "audio": "audio/at_silent-practice.m4a?v=7d372c13",
           "durationSec": 202.9,
           "status": "built"
         }
-      }
+      },
+      "stages": [
+        {
+          "label": "The breath",
+          "formulae": [
+            "br"
+          ]
+        }
+      ],
+      "collapsed": "br"
     },
     {
       "seq": "50",
@@ -324,25 +333,22 @@
           "durationSec": 93.5,
           "status": "built"
         },
-        "guided": {
-          "script": "content/at_50_solar-plexus_guided.txt",
-          "audio": "audio/at_50_solar-plexus_guided.m4a?v=6c451590",
-          "durationSec": 129.5,
-          "status": "built"
-        },
-        "timed": {
-          "script": "content/at_50_solar-plexus_timed.txt",
-          "audio": "audio/at_50_solar-plexus_timed.m4a?v=907076b5",
-          "durationSec": 95.6,
-          "status": "built"
-        },
         "silence": {
           "shared": "silence",
           "audio": "audio/at_silent-practice.m4a?v=7d372c13",
           "durationSec": 202.9,
           "status": "built"
         }
-      }
+      },
+      "stages": [
+        {
+          "label": "The warm centre",
+          "formulae": [
+            "sp"
+          ]
+        }
+      ],
+      "collapsed": "sp"
     },
     {
       "seq": "60",
@@ -363,25 +369,22 @@
           "durationSec": 96.8,
           "status": "built"
         },
-        "guided": {
-          "script": "content/at_60_forehead_guided.txt",
-          "audio": "audio/at_60_forehead_guided.m4a?v=020b3b12",
-          "durationSec": 133.9,
-          "status": "built"
-        },
-        "timed": {
-          "script": "content/at_60_forehead_timed.txt",
-          "audio": "audio/at_60_forehead_timed.m4a?v=9c086bb5",
-          "durationSec": 96.8,
-          "status": "built"
-        },
         "silence": {
           "shared": "silence",
           "audio": "audio/at_silent-practice.m4a?v=7d372c13",
           "durationSec": 202.9,
           "status": "built"
         }
-      }
+      },
+      "stages": [
+        {
+          "label": "Cool forehead",
+          "formulae": [
+            "fh"
+          ]
+        }
+      ],
+      "collapsed": "fh"
     },
     {
       "seq": "70",
@@ -411,5 +414,127 @@
         }
       }
     }
-  ]
+  ],
+  "clips": {
+    "settle": {
+      "audio": "audio/clips/settle.m4a?v=2081db37",
+      "text": "Settle, and scan"
+    },
+    "scan": {
+      "audio": "audio/clips/scan.m4a?v=68db39c8",
+      "text": "A passive body sweep"
+    },
+    "calm": {
+      "audio": "audio/clips/calm.m4a?v=a460d514",
+      "text": "I am completely calm"
+    },
+    "peace": {
+      "audio": "audio/clips/peace.m4a?v=4bc30998",
+      "text": "I am at peace"
+    },
+    "qcancel": {
+      "audio": "audio/clips/qcancel.m4a?v=d999540a",
+      "text": "Quick cancel"
+    },
+    "close": {
+      "audio": "audio/clips/close.m4a?v=8cbc0c07",
+      "text": "The close"
+    },
+    "hv_rarm": {
+      "audio": "audio/clips/hv_rarm.m4a?v=03d09fd2",
+      "text": "My right arm is heavy"
+    },
+    "hv_larm": {
+      "audio": "audio/clips/hv_larm.m4a?v=449ae44e",
+      "text": "My left arm is heavy"
+    },
+    "hv_arms": {
+      "audio": "audio/clips/hv_arms.m4a?v=6378ddcb",
+      "text": "Both arms are heavy"
+    },
+    "hv_rleg": {
+      "audio": "audio/clips/hv_rleg.m4a?v=e5eb5a92",
+      "text": "My right leg is heavy"
+    },
+    "hv_lleg": {
+      "audio": "audio/clips/hv_lleg.m4a?v=62dbe5ef",
+      "text": "My left leg is heavy"
+    },
+    "hv_legs": {
+      "audio": "audio/clips/hv_legs.m4a?v=f2cb8b07",
+      "text": "Both legs are heavy"
+    },
+    "hv_all": {
+      "audio": "audio/clips/hv_all.m4a?v=4583666e",
+      "text": "Arms and legs are heavy"
+    },
+    "wm_rarm": {
+      "audio": "audio/clips/wm_rarm.m4a?v=bb5f2076",
+      "text": "My right arm is warm"
+    },
+    "wm_larm": {
+      "audio": "audio/clips/wm_larm.m4a?v=c9da836f",
+      "text": "My left arm is warm"
+    },
+    "wm_arms": {
+      "audio": "audio/clips/wm_arms.m4a?v=888eac1d",
+      "text": "Both arms are warm"
+    },
+    "wm_rleg": {
+      "audio": "audio/clips/wm_rleg.m4a?v=b5777892",
+      "text": "My right leg is warm"
+    },
+    "wm_lleg": {
+      "audio": "audio/clips/wm_lleg.m4a?v=c441a351",
+      "text": "My left leg is warm"
+    },
+    "wm_legs": {
+      "audio": "audio/clips/wm_legs.m4a?v=96f80b36",
+      "text": "Both legs are warm"
+    },
+    "wm_all": {
+      "audio": "audio/clips/wm_all.m4a?v=759272a0",
+      "text": "Arms and legs are warm"
+    },
+    "hb": {
+      "audio": "audio/clips/hb.m4a?v=b946e879",
+      "text": "My heartbeat is calm and regular"
+    },
+    "ns": {
+      "audio": "audio/clips/ns.m4a?v=6eb86232",
+      "text": "My neck and shoulders are heavy"
+    },
+    "br": {
+      "audio": "audio/clips/br.m4a?v=346f5e99",
+      "text": "It breathes me"
+    },
+    "sp": {
+      "audio": "audio/clips/sp.m4a?v=9715bed7",
+      "text": "My solar plexus is warm"
+    },
+    "fh": {
+      "audio": "audio/clips/fh.m4a?v=026343f8",
+      "text": "My forehead is pleasantly cool"
+    }
+  },
+  "shortExercise": {
+    "cycles": 3,
+    "repsPerFormula": 3,
+    "formulaPause": 5,
+    "cancelPause": 8,
+    "settlePause": 6
+  },
+  "fullSession": {
+    "order": [
+      "heaviness",
+      "warmth",
+      "heartbeat",
+      "breathing",
+      "solar-plexus",
+      "forehead"
+    ],
+    "suffix": "ns",
+    "reps": 2,
+    "formulaPause": 6
+  }
 }
