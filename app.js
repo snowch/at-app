@@ -3,7 +3,7 @@
 const PART_META = {
   teaching:    { label: 'Teaching',        hint: 'hear once' },
   orientation: { label: 'Orientation',     hint: 'what this exercise is · hear once' },
-  silence:     { label: 'Silent practice', hint: 'chime · silence · chime · close' },
+  silence:     { label: 'Silent practice', hint: 'unaided · for the final days, once you know it · chime, silence, chime, close' },
 };
 const SAFETY_ITEMS = [
   'Psychosis, schizophrenia, or a history of psychotic episodes',
@@ -159,9 +159,17 @@ function card(item){
   const caution=item.caution?`<div class="caution"><b>Caution.</b> ${esc(item.caution)}</div>`:'';
   const note=item.note?`<p class="expands">${esc(item.note)}</p>`:'';
   const prereq=(item.prerequisites&&item.prerequisites.length)?`<div class="prereq"><span class="prereq-label">Before you begin</span><ul>${item.prerequisites.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>`:'';
-  const parts=['teaching','orientation','silence'].filter(k=>item.parts&&item.parts[k]).map(k=>partRow(item.id,k,item.parts[k],item.title)).join('');
+  const row=(k)=> (item.parts&&item.parts[k]) ? partRow(item.id,k,item.parts[k],item.title) : '';
+  const wrap=(rows)=> rows ? `<ul class="parts">${rows}</ul>` : '';
+  let body;
+  if(isEx){
+    // within-exercise flow: understand → practise (guided) → practise unaided → assess
+    body = wrap(row('orientation')) + practiceBlock(item) + wrap(row('silence')) + critBlock(item);
+  } else {
+    body = wrap(['teaching','orientation','silence'].map(row).filter(Boolean).join(''));
+  }
   return `<article class="card ${item.type}" ${isEx?`data-ex="${item.id}"`:''}><div class="card-head"><div class="seq">${item.seq}</div><div class="card-title"><div class="badges">${badges}</div><h2>${esc(item.title)}</h2></div></div>`+
-    formula+note+caution+prereq+(parts?`<ul class="parts">${parts}</ul>`:'')+(isEx?practiceBlock(item)+critBlock(item):'')+`</article>`;
+    formula+note+caution+prereq+body+`</article>`;
 }
 function renderLadder(){
   offlineUrls=[]; Object.values(DATA.clips).forEach(c=>offlineUrls.push(c.audio.split('#')[0]));
