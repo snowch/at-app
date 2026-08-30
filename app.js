@@ -95,7 +95,9 @@ function buildOnboarding(){
   const c=DATA.shortExercise, steps=[{key:'settle'},{pause:c.settlePause},{key:'scan'},{pause:6},{key:'calm'},{pause:3}];
   for(let cy=0;cy<c.cycles;cy++){
     for(let r=0;r<c.repsPerFormula;r++){ steps.push({key:'hv_rarm'},{pause:c.formulaPause}); }
-    steps.push({key:'qcancel'},{pause:c.cancelPause});
+    const lastCycle = cy===c.cycles-1;
+    if(lastCycle) steps.push({key:'close'});                    // final cancel = full close (with the switch phrase)
+    else steps.push({key:'qcancel'},{pause:c.cancelPause});     // between cycles = quick cancel
   }
   return steps;
 }
