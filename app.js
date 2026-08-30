@@ -220,17 +220,35 @@ function card(item){
     `<div class="card-body">${body}</div></article>`;
 }
 function toggleCard(id){ state.open[id]=!state.open[id]; save(); const card=ladderEl.querySelector(`.card[data-id="${id}"]`); if(card){ card.classList.toggle('collapsed',!state.open[id]); const ch=card.querySelector('.chev'); if(ch) ch.textContent=state.open[id]?'▾':'▸'; } }
+function teachingRow(it){
+  const p=it.parts&&it.parts.teaching;
+  const built=p&&p.status==='built'&&p.audio;
+  const mark=it.safety?' <span class="row-tag">safety</span>':'';
+  if(!built) return `<li class="part planned"><span class="play">▶</span><div class="part-main"><div class="part-label">${esc(it.title)}${mark}</div><div class="part-meta">hear once</div></div><span class="soon">coming soon</span></li>`;
+  offlineUrls.push(p.audio.split('#')[0]);
+  return `<li class="part"><button class="play" data-src="${p.audio}" data-title="${esc(it.title)}">▶</button><div class="part-main"><div class="part-label">${esc(it.title)}${mark}</div><div class="part-meta">hear once${p.durationSec?' · '+fmt(p.durationSec):''}</div></div></li>`;
+}
+function orientationGroupCard(items,key,title){
+  const open=!!state.open['orient-'+key];
+  const rows=items.map(teachingRow).join('');
+  return `<article class="card orientation ${open?'':'collapsed'}" data-id="orient-${key}"><div class="card-head" data-toggle="orient-${key}"><div class="seq">✦</div><div class="card-title"><div class="badges"><span class="badge">Orientation · listen once</span></div><h2>${esc(title)}</h2></div><span class="chev">${open?'▾':'▸'}</span></div><div class="card-body"><ul class="parts">${rows}</ul></div></article>`;
+}
 function renderLadder(){
   offlineUrls=[]; Object.values(DATA.clips).forEach(c=>offlineUrls.push(c.audio.split('#')[0]));
   state.open=state.open||{};
   const cur=(DATA.items.find(it=>it.type==='exercise'&&!learned(it.id))||{}).id;
   if(cur) state.open[cur]=true;   // always keep the exercise you're on expanded
-  let prev=null, html='';
-  DATA.items.forEach((item,i)=>{
-    if(i===0) html+=`<div class="section">Begin here</div>`;
-    else if(item.type==='exercise'&&prev!=='exercise') html+=`<div class="section">The six exercises</div>`;
-    else if(item.type==='orientation'&&prev==='exercise') html+=`<div class="section">Beyond the six</div>`;
-    prev=item.type; html+=card(item);
+  if(!('orient-begin' in state.open)) state.open['orient-begin']=true;
+  if(!('orient-beyond' in state.open)) state.open['orient-beyond']=false;
+  // group consecutive same-type items; orientation runs collapse into one card
+  const groups=[]; for(const it of DATA.items){ const l=groups[groups.length-1]; if(l&&l.type===it.type) l.items.push(it); else groups.push({type:it.type,items:[it]}); }
+  let html='';
+  groups.forEach((g,gi)=>{
+    if(gi===0) html+=`<div class="section">Start here</div>`;
+    else if(g.type==='exercise') html+=`<div class="section">The six exercises</div>`;
+    else html+=`<div class="section">Beyond the six</div>`;
+    if(g.type==='exercise') g.items.forEach(it=>html+=card(it));
+    else html+=orientationGroupCard(g.items, gi===0?'begin':'beyond', gi===0?'The framework':'Beyond the six');
   });
   ladderEl.innerHTML=html;
   ladderEl.querySelectorAll('.card-head[data-toggle]').forEach(h=>h.addEventListener('click',()=>toggleCard(h.dataset.toggle)));
