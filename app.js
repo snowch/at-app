@@ -88,18 +88,35 @@ mini.seek.oninput=()=>{ if(!session && player.duration) player.currentTime=mini.
 
 /* ================= build sessions ================= */
 const clipText=(k)=>(DATA.clips[k]&&DATA.clips[k].text)||k;
-function buildShort(ex, stageIdx){
-  const c=DATA.shortExercise, st=ex.stages[stageIdx]||ex.stages[0], steps=[];
-  steps.push({key:'settle'},{pause:c.settlePause,label:'·'});
-  steps.push({key:'calm',label:clipText('calm')},{pause:3,label:'·'});
-  for(let cy=0; cy<c.cycles; cy++){
-    for(const fk of st.formulae){
-      for(let r=0;r<c.repsPerFormula;r++){ steps.push({key:fk,label:clipText(fk)},{pause:c.formulaPause,label:'·'}); }
-    }
-    steps.push({key:'qcancel',label:'Cancel — then begin again'},{pause:c.cancelPause,label:'·'});
+const LEARN_ORDER=['heaviness','warmth','heartbeat','neck-shoulders','breathing','solar-plexus','forehead'];
+const isOnboarding=(ex,stageIdx)=> ex.id==='heaviness' && (stageIdx||0)===0;
+// Very first formula: the pure repetition drill — 3 cycles of [formula ×3 → cancel]
+function buildOnboarding(){
+  const c=DATA.shortExercise, steps=[{key:'settle'},{pause:c.settlePause},{key:'scan'},{pause:6},{key:'calm'},{pause:3}];
+  for(let cy=0;cy<c.cycles;cy++){
+    for(let r=0;r<c.repsPerFormula;r++){ steps.push({key:'hv_rarm'},{pause:c.formulaPause}); }
+    steps.push({key:'qcancel'},{pause:c.cancelPause});
   }
   return steps;
 }
+// Cumulative: everything learned so far (collapsed), then the current exercise (expanded), one close
+function buildCumulative(ex, stageIdx){
+  const c=DATA.shortExercise;
+  const upto=LEARN_ORDER.slice(0, LEARN_ORDER.indexOf(ex.id)+1);
+  let seq=DATA.fullSession.order.filter(id=>upto.includes(id));
+  if(upto.includes('neck-shoulders')) seq.push('neck-shoulders');   // suffix, always last
+  const steps=[{key:'settle'},{pause:6},{key:'scan'},{pause:6},{key:'calm'},{pause:3}];
+  for(const id of seq){
+    const it=itemById(id); const cur=id===ex.id;
+    const formulae=cur?((ex.stages[stageIdx]||ex.stages[0]).formulae):[it.collapsed];
+    const reps=cur?c.repsPerFormula:3;
+    for(const fk of formulae){ for(let r=0;r<reps;r++){ steps.push({key:fk},{pause:c.formulaPause}); } }
+  }
+  if(upto.includes('neck-shoulders')){ for(let r=0;r<3;r++) steps.push({key:'peace'},{pause:3}); }
+  steps.push({key:'close'});
+  return steps;
+}
+function buildShort(ex, stageIdx){ return isOnboarding(ex,stageIdx) ? buildOnboarding() : buildCumulative(ex, stageIdx||0); }
 function buildFull(){
   const c=DATA.fullSession, steps=[];
   steps.push({key:'settle'},{pause:6,label:'·'},{key:'calm',label:clipText('calm')},{pause:4,label:'·'});
@@ -150,9 +167,12 @@ function practiceBlock(item){
   if(!item.stages) return '';
   const multi=item.stages.length>1;
   const stageBtns=item.stages.map((s,i)=>`<button class="stage ${i===0?'on':''}" data-ex="${item.id}" data-stage="${i}">${esc(s.label)}</button>`).join('');
+  const hint = item.id==='heaviness'
+    ? 'Days 1–3: three cycles of the formula, each ending in a cancel — the beginner drill. Later stages run as one settled pass.'
+    : 'Runs the exercises you have already learned (in short form), then this one, and ends with the close — building each time.';
   return `<div class="practice"><span class="crit-label">Practise — the short exercise</span>`+
     (multi?`<div class="stages-row">${stageBtns}</div>`:'')+
-    `<p class="practice-hint">Three cycles of the formula, each ending in a cancel — the beginner drill. ${multi?'Pick the stage you are on.':''}</p>`+
+    `<p class="practice-hint">${hint} ${multi?'Pick the stage you are on.':''}</p>`+
     `<button class="start-btn" data-ex="${item.id}">▶ Start short exercise</button>`+
     `<button class="card-btn" data-ex="${item.id}">▤ Practice card — run it from memory</button></div>`;
 }
@@ -162,8 +182,10 @@ function practiceCardHtml(item){
   return `<h3>${esc(item.title)} — practice card</h3>`+
     `<p><strong>Position &amp; scan.</strong> Settle in your posture, eyes closed, a few slow breaths, then a passive sweep through the body — changing nothing.</p>`+
     `<p><strong>Formula.</strong> <em>“${esc(item.formula)}”</em>${item.expands?`<br><span class="muted">expands: ${esc(item.expands)}</span>`:''}</p>`+
-    `<p><strong>The short exercise.</strong> ${c.cycles} cycles, each: the formula ×${c.repsPerFormula}, then a quick cancel. (So: formula, formula, formula → cancel — three times over.)</p>`+
-    (item.week>=5?`<p><strong>In a full session</strong> it runs after the exercises you already know, with <em>“My neck and shoulders are heavy”</em> and <em>“I am at peace”</em> at the end.</p>`:'')+
+    (item.id==='heaviness'
+      ? `<p><strong>The short exercise (days 1–3).</strong> ${c.cycles} cycles, each: the formula ×${c.repsPerFormula}, then a quick cancel.</p>`
+      : `<p><strong>The short exercise.</strong> First run the exercises you already know, each in its short form (e.g. “Arms and legs are heavy” ×3), then work this one — <em>“${esc(item.formula)}”</em> and its expansion — ${c.repsPerFormula}× each. One close at the end.</p>`)+
+    (item.week>=5?`<p><strong>The tail.</strong> From here on, every session ends with <em>“My neck and shoulders are heavy”</em>, then <em>“I am at peace”</em>, then the close.</p>`:'')+
     (item.caution?`<div class="caution"><b>Caution.</b> ${esc(item.caution)}</div>`:'')+
     `<p><strong>The close.</strong> Say “Arms firm, breathe deeply, eyes open.” Make fists 3–4×, bend the arms, one deep breath, open the eyes.</p>`+
     `<p class="muted">Passive concentration: hold the formula lightly, want nothing, let it come — including nothing.</p>`;
