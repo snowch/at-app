@@ -146,6 +146,6 @@ a { color: var(--accent); }
 .mini-title { font-size: .82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 5px; }
 .mini-seek { width: 100%; height: 4px; accent-color: var(--accent); }
 .mini-times { display: flex; justify-content: space-between; color: var(--faint); font-size: .7rem; margin-top: 3px; }
-.mini.session .mini-seek { display: none; }
-.mini.session .mini-title { font-size: 1rem; font-family: var(--serif); font-style: italic; margin-bottom: 3px; }
-.mini.session .mini-times { margin-top: 2px; }
+.mini.session .mini-seek { pointer-events: none; }
+.mini.session .mini-title { font-size: .92rem; margin-bottom: 4px; color: var(--text); }
+.mini.session .mini-times { margin-top: 4px; color: var(--muted); font-size: .72rem; }

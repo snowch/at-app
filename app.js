@@ -50,29 +50,38 @@ player.ontimeupdate=()=>{ if(session||!player.duration) return; mini.seek.value=
 player.onended=()=>{ if(session){ if(!session.paused) stepSession(); } else { if(activeBtn) setBtn(activeBtn,false); mini.play.textContent='▶'; } };
 
 /* session runner */
+const stepDur=(s)=> s.pause ? s.pause : ((DATA.clips[s.key]&&DATA.clips[s.key].durationSec)||2);
+function sessionTick(){
+  if(!session) return;
+  if(!session.paused){ const now=performance.now(); session.elapsed=Math.min(session.total, session.elapsed+(now-session.lastTick)/1000); }
+  session.lastTick=performance.now();
+  const pct=session.total? Math.round(session.elapsed/session.total*1000):0;
+  mini.seek.value=pct; mini.cur.textContent=fmt(session.elapsed); mini.dur.textContent=fmt(session.total);
+}
 function runSession(steps, title){
   stopSession(); if(activeBtn){ setBtn(activeBtn,false); activeBtn=null; }
-  session={steps, i:0, timer:null, paused:false, title};
+  const total=steps.reduce((a,s)=>a+stepDur(s),0);
+  session={steps, i:0, timer:null, paused:false, title, total, elapsed:0, lastTick:performance.now(), ticker:null};
   mini.root.hidden=false; mini.root.classList.add('session'); mini.play.textContent='❚❚';
+  mini.title.textContent=title; mini.seek.value=0; mini.cur.textContent='0:00'; mini.dur.textContent=fmt(total);
+  session.ticker=setInterval(sessionTick, 250);
   stepSession();
 }
 function stepSession(){
   if(!session) return;
   if(session.i>=session.steps.length){ endSession(); return; }
   const s=session.steps[session.i++];
-  const n=session.steps.length;
-  mini.cur.textContent=`${session.title}`; mini.dur.textContent=`${Math.min(session.i,n)}/${n}`;
-  if(s.pause){ mini.title.textContent = s.label || '·'; session.timer=setTimeout(()=>{ if(session&&!session.paused) stepSession(); }, s.pause*1000); }
-  else { mini.title.textContent = s.label || ''; player.src=DATA.clips[s.key].audio; player.play().catch(()=>{}); }
+  if(s.pause){ session.timer=setTimeout(()=>{ if(session&&!session.paused) stepSession(); }, s.pause*1000); }
+  else { player.src=DATA.clips[s.key].audio; player.play().catch(()=>{}); }
 }
 function toggleSession(){
   if(!session) return;
-  if(session.paused){ session.paused=false; mini.play.textContent='❚❚';
+  if(session.paused){ session.paused=false; session.lastTick=performance.now(); mini.play.textContent='❚❚';
     if(player.src && player.paused && player.currentTime>0 && !player.ended) player.play(); else stepSession();
   } else { session.paused=true; mini.play.textContent='▶'; clearTimeout(session.timer); if(!player.paused) player.pause(); }
 }
-function stopSession(){ if(session){ clearTimeout(session.timer); try{player.pause();}catch(e){} session=null; mini.root.classList.remove('session'); mini.root.hidden=true; } }
-function endSession(){ stopSession(); }
+function stopSession(){ if(session){ clearTimeout(session.timer); clearInterval(session.ticker); try{player.pause();}catch(e){} session=null; mini.root.classList.remove('session'); mini.root.hidden=true; } }
+function endSession(){ if(session){ session.elapsed=session.total; sessionTick(); } stopSession(); }
 mini.play.onclick=()=>{ if(session) toggleSession(); else if(player.src) player.paused?player.play():player.pause(); };
 mini.restart.onclick=()=>{ if(session) stopSession(); else if(player.src){ player.currentTime=0; player.play(); } };
 mini.seek.oninput=()=>{ if(!session && player.duration) player.currentTime=mini.seek.value/1000*player.duration; };

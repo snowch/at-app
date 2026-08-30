@@ -418,103 +418,128 @@
   "clips": {
     "settle": {
       "audio": "audio/clips/settle.m4a?v=2081db37",
-      "text": "Settle, and scan"
+      "text": "Settle, and scan",
+      "durationSec": 9.2
     },
     "scan": {
       "audio": "audio/clips/scan.m4a?v=68db39c8",
-      "text": "A passive body sweep"
+      "text": "A passive body sweep",
+      "durationSec": 9.5
     },
     "calm": {
       "audio": "audio/clips/calm.m4a?v=a460d514",
-      "text": "I am completely calm"
+      "text": "I am completely calm",
+      "durationSec": 2.0
     },
     "peace": {
       "audio": "audio/clips/peace.m4a?v=4bc30998",
-      "text": "I am at peace"
+      "text": "I am at peace",
+      "durationSec": 1.5
     },
     "qcancel": {
       "audio": "audio/clips/qcancel.m4a?v=d999540a",
-      "text": "Quick cancel"
+      "text": "Quick cancel",
+      "durationSec": 8.9
     },
     "close": {
       "audio": "audio/clips/close.m4a?v=8cbc0c07",
-      "text": "The close"
+      "text": "The close",
+      "durationSec": 18.0
     },
     "hv_rarm": {
       "audio": "audio/clips/hv_rarm.m4a?v=03d09fd2",
-      "text": "My right arm is heavy"
+      "text": "My right arm is heavy",
+      "durationSec": 1.9
     },
     "hv_larm": {
       "audio": "audio/clips/hv_larm.m4a?v=449ae44e",
-      "text": "My left arm is heavy"
+      "text": "My left arm is heavy",
+      "durationSec": 2.0
     },
     "hv_arms": {
       "audio": "audio/clips/hv_arms.m4a?v=6378ddcb",
-      "text": "Both arms are heavy"
+      "text": "Both arms are heavy",
+      "durationSec": 1.9
     },
     "hv_rleg": {
       "audio": "audio/clips/hv_rleg.m4a?v=e5eb5a92",
-      "text": "My right leg is heavy"
+      "text": "My right leg is heavy",
+      "durationSec": 2.0
     },
     "hv_lleg": {
       "audio": "audio/clips/hv_lleg.m4a?v=62dbe5ef",
-      "text": "My left leg is heavy"
+      "text": "My left leg is heavy",
+      "durationSec": 2.0
     },
     "hv_legs": {
       "audio": "audio/clips/hv_legs.m4a?v=f2cb8b07",
-      "text": "Both legs are heavy"
+      "text": "Both legs are heavy",
+      "durationSec": 1.9
     },
     "hv_all": {
       "audio": "audio/clips/hv_all.m4a?v=4583666e",
-      "text": "Arms and legs are heavy"
+      "text": "Arms and legs are heavy",
+      "durationSec": 2.6
     },
     "wm_rarm": {
       "audio": "audio/clips/wm_rarm.m4a?v=bb5f2076",
-      "text": "My right arm is warm"
+      "text": "My right arm is warm",
+      "durationSec": 2.1
     },
     "wm_larm": {
       "audio": "audio/clips/wm_larm.m4a?v=c9da836f",
-      "text": "My left arm is warm"
+      "text": "My left arm is warm",
+      "durationSec": 2.1
     },
     "wm_arms": {
       "audio": "audio/clips/wm_arms.m4a?v=888eac1d",
-      "text": "Both arms are warm"
+      "text": "Both arms are warm",
+      "durationSec": 2.0
     },
     "wm_rleg": {
       "audio": "audio/clips/wm_rleg.m4a?v=b5777892",
-      "text": "My right leg is warm"
+      "text": "My right leg is warm",
+      "durationSec": 2.1
     },
     "wm_lleg": {
       "audio": "audio/clips/wm_lleg.m4a?v=c441a351",
-      "text": "My left leg is warm"
+      "text": "My left leg is warm",
+      "durationSec": 2.1
     },
     "wm_legs": {
       "audio": "audio/clips/wm_legs.m4a?v=96f80b36",
-      "text": "Both legs are warm"
+      "text": "Both legs are warm",
+      "durationSec": 2.0
     },
     "wm_all": {
       "audio": "audio/clips/wm_all.m4a?v=759272a0",
-      "text": "Arms and legs are warm"
+      "text": "Arms and legs are warm",
+      "durationSec": 2.7
     },
     "hb": {
       "audio": "audio/clips/hb.m4a?v=b946e879",
-      "text": "My heartbeat is calm and regular"
+      "text": "My heartbeat is calm and regular",
+      "durationSec": 3.2
     },
     "ns": {
       "audio": "audio/clips/ns.m4a?v=6eb86232",
-      "text": "My neck and shoulders are heavy"
+      "text": "My neck and shoulders are heavy",
+      "durationSec": 2.9
     },
     "br": {
       "audio": "audio/clips/br.m4a?v=346f5e99",
-      "text": "It breathes me"
+      "text": "It breathes me",
+      "durationSec": 1.4
     },
     "sp": {
       "audio": "audio/clips/sp.m4a?v=9715bed7",
-      "text": "My solar plexus is warm"
+      "text": "My solar plexus is warm",
+      "durationSec": 3.1
     },
     "fh": {
       "audio": "audio/clips/fh.m4a?v=026343f8",
-      "text": "My forehead is pleasantly cool"
+      "text": "My forehead is pleasantly cool",
+      "durationSec": 3.0
     }
   },
   "shortExercise": {
