@@ -144,7 +144,20 @@ function practiceBlock(item){
   return `<div class="practice"><span class="crit-label">Practise — the short exercise</span>`+
     (multi?`<div class="stages-row">${stageBtns}</div>`:'')+
     `<p class="practice-hint">Three cycles of the formula, each ending in a cancel — the beginner drill. ${multi?'Pick the stage you are on.':''}</p>`+
-    `<button class="start-btn" data-ex="${item.id}">▶ Start short exercise</button></div>`;
+    `<button class="start-btn" data-ex="${item.id}">▶ Start short exercise</button>`+
+    `<button class="card-btn" data-ex="${item.id}">▤ Practice card — run it from memory</button></div>`;
+}
+function practiceCardHtml(item){
+  const formulae = item.stages.map(s=>s.formulae.map(clipText).join(', ')).join(' → ');
+  const c=DATA.shortExercise;
+  return `<h3>${esc(item.title)} — practice card</h3>`+
+    `<p><strong>Position &amp; scan.</strong> Settle in your posture, eyes closed, a few slow breaths, then a passive sweep through the body — changing nothing.</p>`+
+    `<p><strong>Formula.</strong> <em>“${esc(item.formula)}”</em>${item.expands?`<br><span class="muted">expands: ${esc(item.expands)}</span>`:''}</p>`+
+    `<p><strong>The short exercise.</strong> ${c.cycles} cycles, each: the formula ×${c.repsPerFormula}, then a quick cancel. (So: formula, formula, formula → cancel — three times over.)</p>`+
+    (item.week>=5?`<p><strong>In a full session</strong> it runs after the exercises you already know, with <em>“My neck and shoulders are heavy”</em> and <em>“I am at peace”</em> at the end.</p>`:'')+
+    (item.caution?`<div class="caution"><b>Caution.</b> ${esc(item.caution)}</div>`:'')+
+    `<p><strong>The close.</strong> Say “Arms firm, breathe deeply, eyes open.” Make fists 3–4×, bend the arms, one deep breath, open the eyes.</p>`+
+    `<p class="muted">Passive concentration: hold the formula lightly, want nothing, let it come — including nothing.</p>`;
 }
 function critBlock(item){
   const a=state.crit[item.id]||[false,false,false,false];
@@ -164,15 +177,21 @@ function card(item){
   let body;
   if(isEx){
     // within-exercise flow: understand → practise (guided) → practise unaided → assess
-    body = wrap(row('orientation')) + practiceBlock(item) + wrap(row('silence')) + critBlock(item);
+    body = formula+note+caution+prereq + wrap(row('orientation')) + practiceBlock(item) + wrap(row('silence')) + critBlock(item);
   } else {
-    body = wrap(['teaching','orientation','silence'].map(row).filter(Boolean).join(''));
+    body = formula+note+caution+prereq + wrap(['teaching','orientation','silence'].map(row).filter(Boolean).join(''));
   }
-  return `<article class="card ${item.type}" ${isEx?`data-ex="${item.id}"`:''}><div class="card-head"><div class="seq">${item.seq}</div><div class="card-title"><div class="badges">${badges}</div><h2>${esc(item.title)}</h2></div></div>`+
-    formula+note+caution+prereq+body+`</article>`;
+  const open = !!state.open[item.id];
+  return `<article class="card ${item.type} ${open?'':'collapsed'}" data-id="${item.id}" ${isEx?`data-ex="${item.id}"`:''}>`+
+    `<div class="card-head" data-toggle="${item.id}"><div class="seq">${item.seq}</div><div class="card-title"><div class="badges">${badges}</div><h2>${esc(item.title)}</h2></div><span class="chev">${open?'▾':'▸'}</span></div>`+
+    `<div class="card-body">${body}</div></article>`;
 }
+function toggleCard(id){ state.open[id]=!state.open[id]; save(); const card=ladderEl.querySelector(`.card[data-id="${id}"]`); if(card){ card.classList.toggle('collapsed',!state.open[id]); const ch=card.querySelector('.chev'); if(ch) ch.textContent=state.open[id]?'▾':'▸'; } }
 function renderLadder(){
   offlineUrls=[]; Object.values(DATA.clips).forEach(c=>offlineUrls.push(c.audio.split('#')[0]));
+  state.open=state.open||{};
+  const cur=(DATA.items.find(it=>it.type==='exercise'&&!learned(it.id))||{}).id;
+  if(cur) state.open[cur]=true;   // always keep the exercise you're on expanded
   let prev=null, html='';
   DATA.items.forEach((item,i)=>{
     if(i===0) html+=`<div class="section">Begin here</div>`;
@@ -181,6 +200,8 @@ function renderLadder(){
     prev=item.type; html+=card(item);
   });
   ladderEl.innerHTML=html;
+  ladderEl.querySelectorAll('.card-head[data-toggle]').forEach(h=>h.addEventListener('click',()=>toggleCard(h.dataset.toggle)));
+  ladderEl.querySelectorAll('.card-btn[data-ex]').forEach(b=>b.addEventListener('click',()=>openModal(practiceCardHtml(itemById(b.dataset.ex)))));
   ladderEl.querySelectorAll('.play[data-src]').forEach(b=>b.addEventListener('click',()=>startTrack(b)));
   ladderEl.querySelectorAll('.crit-item').forEach(li=>li.addEventListener('click',()=>toggleCrit(li.dataset.ex,+li.dataset.i,li.querySelector('.box'))));
   ladderEl.querySelectorAll('.ready-btn[data-ex]').forEach(b=>b.addEventListener('click',()=>markReady(b.dataset.ex)));
