@@ -45,7 +45,7 @@
       "parts": {
         "teaching": {
           "script": "content/at_00_welcome.txt",
-          "audio": "audio/at_00_welcome.m4a?v=5f081257",
+          "audio": "audio/at_00_welcome.m4a?v=478cf6e4",
           "durationSec": 120.7,
           "status": "built"
         }
@@ -59,7 +59,7 @@
       "parts": {
         "teaching": {
           "script": "content/at_01_passive-concentration.txt",
-          "audio": "audio/at_01_passive-concentration.m4a?v=5625fd74",
+          "audio": "audio/at_01_passive-concentration.m4a?v=043fe613",
           "durationSec": 120.8,
           "status": "built"
         }
@@ -73,7 +73,7 @@
       "parts": {
         "teaching": {
           "script": "content/at_02_the-session.txt",
-          "audio": "audio/at_02_the-session.m4a?v=98e11b3e",
+          "audio": "audio/at_02_the-session.m4a?v=8639f4e3",
           "durationSec": 116.9,
           "status": "built"
         }
@@ -87,7 +87,7 @@
       "parts": {
         "teaching": {
           "script": "content/at_03_the-close.txt",
-          "audio": "audio/at_03_the-close.m4a?v=a617202e",
+          "audio": "audio/at_03_the-close.m4a?v=e05c83e8",
           "durationSec": 100.4,
           "status": "built"
         }
@@ -102,7 +102,7 @@
       "parts": {
         "teaching": {
           "script": "content/at_04_safety.txt",
-          "audio": "audio/at_04_safety.m4a?v=7766d4d4",
+          "audio": "audio/at_04_safety.m4a?v=8d0e4a43",
           "durationSec": 140.0,
           "status": "built"
         }
@@ -124,7 +124,7 @@
       "parts": {
         "orientation": {
           "script": "content/at_10_heaviness_orientation.txt",
-          "audio": "audio/at_10_heaviness_orientation.m4a?v=a7171eaa",
+          "audio": "audio/at_10_heaviness_orientation.m4a?v=2d4094a8",
           "durationSec": 110.0,
           "status": "built"
         },
@@ -172,7 +172,7 @@
       "parts": {
         "orientation": {
           "script": "content/at_20_warmth_orientation.txt",
-          "audio": "audio/at_20_warmth_orientation.m4a?v=f319f86c",
+          "audio": "audio/at_20_warmth_orientation.m4a?v=acf549d7",
           "durationSec": 107.6,
           "status": "built"
         },
@@ -220,7 +220,7 @@
       "parts": {
         "orientation": {
           "script": "content/at_30_heartbeat_orientation.txt",
-          "audio": "audio/at_30_heartbeat_orientation.m4a?v=858d9588",
+          "audio": "audio/at_30_heartbeat_orientation.m4a?v=c2387b31",
           "durationSec": 115.1,
           "status": "built"
         },
@@ -256,7 +256,7 @@
       "parts": {
         "orientation": {
           "script": "content/at_35_neck-shoulders_orientation.txt",
-          "audio": "audio/at_35_neck-shoulders_orientation.m4a?v=f03f85d3",
+          "audio": "audio/at_35_neck-shoulders_orientation.m4a?v=b2243a9c",
           "durationSec": 116.3,
           "status": "built"
         },
@@ -292,7 +292,7 @@
       "parts": {
         "orientation": {
           "script": "content/at_40_breathing_orientation.txt",
-          "audio": "audio/at_40_breathing_orientation.m4a?v=7be80991",
+          "audio": "audio/at_40_breathing_orientation.m4a?v=f5de34a8",
           "durationSec": 93.5,
           "status": "built"
         },
@@ -329,7 +329,7 @@
       "parts": {
         "orientation": {
           "script": "content/at_50_solar-plexus_orientation.txt",
-          "audio": "audio/at_50_solar-plexus_orientation.m4a?v=c11fc667",
+          "audio": "audio/at_50_solar-plexus_orientation.m4a?v=3a03419a",
           "durationSec": 93.5,
           "status": "built"
         },
@@ -365,7 +365,7 @@
       "parts": {
         "orientation": {
           "script": "content/at_60_forehead_orientation.txt",
-          "audio": "audio/at_60_forehead_orientation.m4a?v=0bfdebdf",
+          "audio": "audio/at_60_forehead_orientation.m4a?v=ae7609b7",
           "durationSec": 96.8,
           "status": "built"
         },
@@ -394,7 +394,7 @@
       "parts": {
         "teaching": {
           "script": "content/at_70_short-forms.txt",
-          "audio": "audio/at_70_short-forms.m4a?v=e60d37ba",
+          "audio": "audio/at_70_short-forms.m4a?v=8026b93c",
           "durationSec": 95.9,
           "status": "built"
         }
@@ -408,7 +408,7 @@
       "parts": {
         "teaching": {
           "script": "content/at_80_intentional-formulae.txt",
-          "audio": "audio/at_80_intentional-formulae.m4a?v=c0112aae",
+          "audio": "audio/at_80_intentional-formulae.m4a?v=ac1f40e1",
           "durationSec": 99.4,
           "status": "built"
         }
@@ -417,127 +417,127 @@
   ],
   "clips": {
     "settle": {
-      "audio": "audio/clips/settle.m4a?v=2081db37",
+      "audio": "audio/clips/settle.m4a?v=ad1e1fa5",
       "text": "Settle, and scan",
       "durationSec": 9.2
     },
     "scan": {
-      "audio": "audio/clips/scan.m4a?v=68db39c8",
+      "audio": "audio/clips/scan.m4a?v=5c7d0c69",
       "text": "A passive body sweep",
       "durationSec": 9.5
     },
     "calm": {
-      "audio": "audio/clips/calm.m4a?v=a460d514",
+      "audio": "audio/clips/calm.m4a?v=464a2190",
       "text": "I am completely calm",
       "durationSec": 2.0
     },
     "peace": {
-      "audio": "audio/clips/peace.m4a?v=4bc30998",
+      "audio": "audio/clips/peace.m4a?v=13f693c8",
       "text": "I am at peace",
       "durationSec": 1.5
     },
     "qcancel": {
-      "audio": "audio/clips/qcancel.m4a?v=d999540a",
+      "audio": "audio/clips/qcancel.m4a?v=0c6d2804",
       "text": "Quick cancel",
       "durationSec": 8.9
     },
     "close": {
-      "audio": "audio/clips/close.m4a?v=8cbc0c07",
+      "audio": "audio/clips/close.m4a?v=ea79cada",
       "text": "The close",
       "durationSec": 18.0
     },
     "hv_rarm": {
-      "audio": "audio/clips/hv_rarm.m4a?v=03d09fd2",
+      "audio": "audio/clips/hv_rarm.m4a?v=748c9de8",
       "text": "My right arm is heavy",
       "durationSec": 1.9
     },
     "hv_larm": {
-      "audio": "audio/clips/hv_larm.m4a?v=449ae44e",
+      "audio": "audio/clips/hv_larm.m4a?v=f17ef283",
       "text": "My left arm is heavy",
       "durationSec": 2.0
     },
     "hv_arms": {
-      "audio": "audio/clips/hv_arms.m4a?v=6378ddcb",
+      "audio": "audio/clips/hv_arms.m4a?v=ed94ebbc",
       "text": "Both arms are heavy",
       "durationSec": 1.9
     },
     "hv_rleg": {
-      "audio": "audio/clips/hv_rleg.m4a?v=e5eb5a92",
+      "audio": "audio/clips/hv_rleg.m4a?v=028ef344",
       "text": "My right leg is heavy",
       "durationSec": 2.0
     },
     "hv_lleg": {
-      "audio": "audio/clips/hv_lleg.m4a?v=62dbe5ef",
+      "audio": "audio/clips/hv_lleg.m4a?v=5ca81c78",
       "text": "My left leg is heavy",
       "durationSec": 2.0
     },
     "hv_legs": {
-      "audio": "audio/clips/hv_legs.m4a?v=f2cb8b07",
+      "audio": "audio/clips/hv_legs.m4a?v=67878927",
       "text": "Both legs are heavy",
       "durationSec": 1.9
     },
     "hv_all": {
-      "audio": "audio/clips/hv_all.m4a?v=4583666e",
+      "audio": "audio/clips/hv_all.m4a?v=00a3796f",
       "text": "Arms and legs are heavy",
       "durationSec": 2.6
     },
     "wm_rarm": {
-      "audio": "audio/clips/wm_rarm.m4a?v=bb5f2076",
+      "audio": "audio/clips/wm_rarm.m4a?v=6564add1",
       "text": "My right arm is warm",
       "durationSec": 2.1
     },
     "wm_larm": {
-      "audio": "audio/clips/wm_larm.m4a?v=c9da836f",
+      "audio": "audio/clips/wm_larm.m4a?v=05bdf09a",
       "text": "My left arm is warm",
       "durationSec": 2.1
     },
     "wm_arms": {
-      "audio": "audio/clips/wm_arms.m4a?v=888eac1d",
+      "audio": "audio/clips/wm_arms.m4a?v=190ed4cb",
       "text": "Both arms are warm",
       "durationSec": 2.0
     },
     "wm_rleg": {
-      "audio": "audio/clips/wm_rleg.m4a?v=b5777892",
+      "audio": "audio/clips/wm_rleg.m4a?v=475c358a",
       "text": "My right leg is warm",
       "durationSec": 2.1
     },
     "wm_lleg": {
-      "audio": "audio/clips/wm_lleg.m4a?v=c441a351",
+      "audio": "audio/clips/wm_lleg.m4a?v=cb7e9fbf",
       "text": "My left leg is warm",
       "durationSec": 2.1
     },
     "wm_legs": {
-      "audio": "audio/clips/wm_legs.m4a?v=96f80b36",
+      "audio": "audio/clips/wm_legs.m4a?v=3457fb8a",
       "text": "Both legs are warm",
       "durationSec": 2.0
     },
     "wm_all": {
-      "audio": "audio/clips/wm_all.m4a?v=759272a0",
+      "audio": "audio/clips/wm_all.m4a?v=186f03fe",
       "text": "Arms and legs are warm",
       "durationSec": 2.7
     },
     "hb": {
-      "audio": "audio/clips/hb.m4a?v=b946e879",
+      "audio": "audio/clips/hb.m4a?v=8fe6c2e4",
       "text": "My heartbeat is calm and regular",
       "durationSec": 3.2
     },
     "ns": {
-      "audio": "audio/clips/ns.m4a?v=6eb86232",
+      "audio": "audio/clips/ns.m4a?v=efc49063",
       "text": "My neck and shoulders are heavy",
       "durationSec": 2.9
     },
     "br": {
-      "audio": "audio/clips/br.m4a?v=346f5e99",
+      "audio": "audio/clips/br.m4a?v=48a6e61b",
       "text": "It breathes me",
       "durationSec": 1.4
     },
     "sp": {
-      "audio": "audio/clips/sp.m4a?v=9715bed7",
+      "audio": "audio/clips/sp.m4a?v=8d8df682",
       "text": "My solar plexus is warm",
       "durationSec": 3.1
     },
     "fh": {
-      "audio": "audio/clips/fh.m4a?v=026343f8",
+      "audio": "audio/clips/fh.m4a?v=6426a883",
       "text": "My forehead is pleasantly cool",
       "durationSec": 3.0
     }
