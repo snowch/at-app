@@ -87,8 +87,8 @@
       "parts": {
         "teaching": {
           "script": "content/at_03_the-close.txt",
-          "audio": "audio/at_03_the-close.m4a?v=e05c83e8",
-          "durationSec": 100.4,
+          "audio": "audio/at_03_the-close.m4a?v=53ad7050",
+          "durationSec": 101.4,
           "status": "built"
         }
       }
@@ -102,8 +102,8 @@
       "parts": {
         "teaching": {
           "script": "content/at_04_safety.txt",
-          "audio": "audio/at_04_safety.m4a?v=8d0e4a43",
-          "durationSec": 140.0,
+          "audio": "audio/at_04_safety.m4a?v=fdf39e4a",
+          "durationSec": 142.0,
           "status": "built"
         }
       }
