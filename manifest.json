@@ -96,7 +96,7 @@
     {
       "seq": "04",
       "id": "safety",
-      "title": "Safety \u2014 read before you begin",
+      "title": "Safety \u2014 listen before you begin",
       "type": "orientation",
       "safety": true,
       "parts": {
