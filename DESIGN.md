@@ -27,6 +27,17 @@ track is shared across exercises.
 ## The close is non-negotiable
 Every guided/timed track ends with the cancellation; the silent-practice track ends with a spoken close reminder. The bedtime exception is stated in "The close".
 
+**The one exception, in the app.** Each exercise (and the full session) offers a secondary "☾ To fall asleep — no close" button. It runs the *settled cumulative* pass (never the beginner drill), strips the trailing close (`stripClose`), and — because you're meant to be drifting off — does **not** raise the post-session log prompt. Every other start button ends with the close. The button carries an inline caution that it is for bed only.
+
+## Practice log — the fifth step of the session
+The taught session shape is *Position · Settle · Formula · Close · **Log***, and the welcome asks the learner to "keep a short log so you can see your progress." The app makes that real:
+- **Prompt.** A guided session (short or full) ends by offering a 30-second log: *did the sensation come — on its own / partly / not yet* + an optional note. Manual "✎ Log a practice" on each exercise covers unaided sittings; a toolbar "✎ Log" opens the whole history (today's count toward 3×/day, and a day streak).
+- **Feeds progression.** Progression criterion 3 is literally *"consistent in ~two-thirds of sessions over a week."* The log surfaces that evidence in the criteria block — *"came on its own in X of your last Y this week"* — so ticking is honest, not guessed.
+- **Privacy.** Stored only in `localStorage` (`at-progress-v1.log`), never uploaded; entries are individually deletable. All user text is HTML-escaped on render.
+
+## Scripting gotcha — no lone-word first segment
+Kokoro hallucinates a phantom onset when the first `<break>`-delimited segment is a very short standalone utterance ("The close." → "in the close"; "Safety." → "a safety…"). Open every script with a **full phrase** ("The close of every session.", "Safety, and who should take extra care.") or the "Exercise N. Title." pattern, and STT-verify the opening before shipping.
+
 ## Content principle
 Teaching text says *what to do* and *what people find* — never *what you will feel*. Promising a sensation guarantees striving, which is the one thing that blocks it.
 

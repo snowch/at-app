@@ -20,6 +20,7 @@ const mini={ root:$('mini'), play:$('miniPlay'), restart:$('miniRestart'), title
 const STORE='at-progress-v1';
 const state=JSON.parse(localStorage.getItem(STORE)||'{}');
 state.crit=state.crit||{}; state.ready=state.ready||{};
+state.log=Array.isArray(state.log)?state.log:[];   // practice log: {t, ex, s:'yes'|'partly'|'no', note}
 const save=()=>localStorage.setItem(STORE, JSON.stringify(state));
 const hasCaches='caches' in window;
 let DATA=null, offlineUrls=[], activeBtn=null;
@@ -28,6 +29,7 @@ const fmt=(s)=>(s&&isFinite(s))||s===0?`${Math.floor(s/60)}:${String(Math.floor(
 const esc=(s)=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const itemById=(id)=>DATA.items.find(it=>it.id===id);
 const learned=(id)=>!!state.ready[id];
+const exTitle=(id)=> id==='full' ? 'Full session' : ((itemById(id)||{}).title || id);
 
 /* ================= playback ================= */
 let session=null;   // {steps,i,timer,paused}
@@ -58,10 +60,10 @@ function sessionTick(){
   const pct=session.total? Math.round(session.elapsed/session.total*1000):0;
   mini.seek.value=pct; mini.cur.textContent=fmt(session.elapsed); mini.dur.textContent=fmt(session.total);
 }
-function runSession(steps, title){
+function runSession(steps, title, exId, sleep){
   stopSession(); if(activeBtn){ setBtn(activeBtn,false); activeBtn=null; }
   const total=steps.reduce((a,s)=>a+stepDur(s),0);
-  session={steps, i:0, timer:null, paused:false, title, total, elapsed:0, lastTick:performance.now(), ticker:null};
+  session={steps, i:0, timer:null, paused:false, title, exId, sleep:!!sleep, total, elapsed:0, lastTick:performance.now(), ticker:null};
   mini.root.hidden=false; mini.root.classList.add('session'); mini.play.textContent='❚❚';
   mini.title.textContent=title; mini.seek.value=0; mini.cur.textContent='0:00'; mini.dur.textContent=fmt(total);
   session.ticker=setInterval(sessionTick, 250);
@@ -81,7 +83,7 @@ function toggleSession(){
   } else { session.paused=true; mini.play.textContent='▶'; clearTimeout(session.timer); if(!player.paused) player.pause(); }
 }
 function stopSession(){ if(session){ clearTimeout(session.timer); clearInterval(session.ticker); try{player.pause();}catch(e){} session=null; mini.root.classList.remove('session'); mini.root.hidden=true; } }
-function endSession(){ if(session){ session.elapsed=session.total; sessionTick(); } stopSession(); }
+function endSession(){ let ex=null, sleep=false; if(session){ session.elapsed=session.total; sessionTick(); ex=session.exId; sleep=session.sleep; } stopSession(); if(ex && !sleep) setTimeout(()=>promptLog(ex,true), 500); }
 mini.play.onclick=()=>{ if(session) toggleSession(); else if(player.src) player.paused?player.play():player.pause(); };
 mini.restart.onclick=()=>{ if(session) stopSession(); else if(player.src){ player.currentTime=0; player.play(); } };
 mini.seek.oninput=()=>{ if(!session && player.duration) player.currentTime=mini.seek.value/1000*player.duration; };
@@ -119,6 +121,9 @@ function buildCumulative(ex, stageIdx){
   return steps;
 }
 function buildShort(ex, stageIdx){ return isOnboarding(ex,stageIdx) ? buildOnboarding() : buildCumulative(ex, stageIdx||0); }
+// For falling asleep: run the settled cumulative pass, but leave the close out and drift (never the beginner drill).
+const stripClose=(steps)=>{ const s=steps.slice(); if(s.length && s[s.length-1].key==='close') s.pop(); return s; };
+function buildSleep(ex, stageIdx){ return stripClose(buildCumulative(ex, stageIdx||0)); }
 function buildFull(){
   const c=DATA.fullSession, steps=[];
   steps.push({key:'settle'},{pause:6,label:'·'},{key:'calm',label:clipText('calm')},{pause:4,label:'·'});
@@ -144,6 +149,77 @@ $('modalClose').onclick=closeModal; modal.onclick=(e)=>{ if(e.target===modal) cl
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 $('closeBtn').onclick=()=>openModal(`<h3>The close</h3><p>Never skip this. The practice genuinely slows your body down; the close brings it back up before you stand, so you don't feel groggy or lightheaded.</p><ol>${DATA.close.map(s=>`<li>${esc(s)}</li>`).join('')}</ol><p class="muted">The one exception: in bed to fall asleep — then omit the close and let yourself drift.</p>`);
 $('principleBtn').onclick=()=>openModal(`<h3>Passive concentration</h3><p>${esc(DATA.corePrinciple)}</p><p>You are not commanding the body or checking whether it worked. Hold the formula lightly and let whatever happens happen — including nothing. The sensations arrive only when you stop requiring them.</p>`);
+
+/* ================= practice log ================= */
+const DAY=86400000;
+const S_LABEL={yes:'On its own', partly:'Partly', no:'Not yet'};
+const logFor=(id)=> state.log.filter(e=>e.ex===id).sort((a,b)=>b.t-a.t);
+function weekStat(id){ const now=Date.now(); const es=state.log.filter(e=>e.ex===id && now-e.t < 7*DAY); return { n:es.length, came:es.filter(e=>e.s==='yes').length }; }
+function dayKey(t){ const d=new Date(t); return d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate(); }
+function todayCount(){ const k=dayKey(Date.now()); return state.log.filter(e=>dayKey(e.t)===k).length; }
+function streak(){ const days=new Set(state.log.map(e=>dayKey(e.t))); if(!days.size) return 0;
+  let s=0, c=new Date(); if(!days.has(dayKey(c.getTime()))) c.setDate(c.getDate()-1);
+  while(days.has(dayKey(c.getTime()))){ s++; c.setDate(c.getDate()-1); } return s; }
+function fmtWhen(t){ const d=new Date(t), now=new Date(), y=new Date(); y.setDate(now.getDate()-1);
+  const hh=String(d.getHours()).padStart(2,'0'), mm=String(d.getMinutes()).padStart(2,'0');
+  if(d.toDateString()===now.toDateString()) return `Today ${hh}:${mm}`;
+  if(d.toDateString()===y.toDateString()) return `Yesterday ${hh}:${mm}`;
+  return d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+` ${hh}:${mm}`; }
+
+/* the 30-second log sheet, shown after a session or from a card */
+function promptLog(exId, postSession){
+  const title=esc(exTitle(exId));
+  const lead = postSession
+    ? `That completes the session shape — <strong>position, settle, formula, close, log</strong>. Thirty seconds now makes your progress real.`
+    : `Thirty seconds — the step that makes progress visible.`;
+  openModal(`<h3>Log your practice</h3><p>${lead}</p>`+
+    `<p class="log-for">${title}</p>`+
+    `<div class="log-q">Did the sensation come?</div>`+
+    `<div class="log-opts">`+
+      Object.keys(S_LABEL).map(k=>`<button class="log-opt" data-s="${k}">${S_LABEL[k]}</button>`).join('')+
+    `</div>`+
+    `<textarea class="log-note" id="logNote" rows="2" placeholder="Anything you noticed — sensations, distractions, how you felt after (optional)"></textarea>`+
+    `<div class="log-actions"><button class="log-skip" id="logSkip">Skip</button><button class="log-save" id="logSave" disabled>Save entry</button></div>`+
+    `<p class="log-priv">Kept only on this device.</p>`);
+  let sel=null; const saveBtn=$('logSave');
+  modalBody.querySelectorAll('.log-opt').forEach(b=>b.onclick=()=>{ sel=b.dataset.s; modalBody.querySelectorAll('.log-opt').forEach(x=>x.classList.toggle('on',x===b)); saveBtn.disabled=false; });
+  $('logSkip').onclick=closeModal;
+  saveBtn.onclick=()=>{ if(!sel) return; state.log.push({t:Date.now(), ex:exId, s:sel, note:($('logNote').value||'').trim().slice(0,500)}); save(); closeModal(); if(itemById(exId)) refreshEvidence(exId); };
+}
+
+/* evidence line shown in the progression block */
+function evidenceHtml(id){
+  const total=logFor(id).length; if(!total) return `No practices logged yet — tap “Log a practice” after you sit.`;
+  const w=weekStat(id);
+  const s = w.n ? `came on its own in <strong>${w.came}</strong> of your last <strong>${w.n}</strong> this week` : `${total} logged`;
+  return `Your log · ${s} · <button class="log-view" data-ex="${id}">view all</button>`;
+}
+function refreshEvidence(id){ const el=ladderEl.querySelector(`.log-ev[data-ex="${id}"]`); if(!el) return; el.innerHTML=evidenceHtml(id); const v=el.querySelector('.log-view'); if(v) v.onclick=()=>openLogModal(id); }
+
+/* history modal — one exercise, or the whole log */
+function logListHtml(exId){
+  const es = exId ? logFor(exId) : [...state.log].sort((a,b)=>b.t-a.t);
+  if(!es.length) return `<p class="muted">No entries yet. After a practice, tap “Log a practice”.</p>`;
+  return `<ul class="log-list">`+es.map(e=>`<li class="log-item"><div class="log-item-h">`+
+    `<span class="log-badge ${e.s}">${S_LABEL[e.s]||e.s}</span>`+
+    (exId?'':`<span class="log-ex">${esc(exTitle(e.ex))}</span>`)+
+    `<span class="log-when">${fmtWhen(e.t)}</span>`+
+    `<button class="log-del" data-t="${e.t}" aria-label="Delete entry">✕</button></div>`+
+    (e.note?`<div class="log-item-note">${esc(e.note)}</div>`:'')+`</li>`).join('')+`</ul>`;
+}
+function wireLogList(exId){
+  modalBody.querySelectorAll('.log-del').forEach(b=>b.onclick=()=>{ const t=+b.dataset.t; state.log=state.log.filter(e=>e.t!==t); save();
+    const wrap=$('logListWrap'); if(wrap){ wrap.innerHTML=logListHtml(exId); wireLogList(exId); } const h=$('logHead'); if(h) h.innerHTML=logHeadHtml();
+    DATA.items.filter(it=>it.type==='exercise').forEach(it=>refreshEvidence(it.id)); });
+}
+function logHeadHtml(){ return `Aim for three short practices a day. <strong>${todayCount()}</strong> today${streak()>1?` · ${streak()}-day streak`:''}.`; }
+function openLogModal(exId){
+  const heading = exId ? `${esc(exTitle(exId))} — log` : 'Practice log';
+  const head = exId ? `<p>Ticking your progression is honest when the log backs it up.</p>` : `<p id="logHead">${logHeadHtml()}</p>`;
+  openModal(`<h3>${heading}</h3>${head}<div id="logListWrap">${logListHtml(exId)}</div>`+
+    `<p class="log-priv">Your log is kept only on this device — nothing is uploaded. Clearing the app’s site data erases it.</p>`);
+  wireLogList(exId);
+}
 
 /* ================= progression ================= */
 function toggleCrit(exId,i,box){ const a=state.crit[exId]||[false,false,false,false]; a[i]=!a[i]; state.crit[exId]=a; box.classList.toggle('on',a[i]); box.textContent=a[i]?'✓':''; save(); refreshReady(exId); }
@@ -172,11 +248,14 @@ function practiceBlock(item){
   const hint = item.id==='heaviness'
     ? 'Days 1–3: three cycles of the formula, each ending in a cancel — the beginner drill. Later stages run as one settled pass.'
     : 'Runs the exercises you have already learned (in short form), then this one, and ends with the close — building each time.';
-  return `<div class="practice"><span class="crit-label">Practise — the short exercise</span>`+
+  return `<div class="practice"><span class="crit-label">Practise</span>`+
     (multi?`<div class="stages-row">${stageBtns}</div>`:'')+
     `<p class="practice-hint">${hint} ${multi?'Pick the stage you are on.':''}</p>`+
-    `<button class="start-btn" data-ex="${item.id}">▶ Start short exercise</button>`+
-    `<button class="card-btn" data-ex="${item.id}">▤ Practice card — run it from memory</button></div>`;
+    `<button class="start-btn" data-ex="${item.id}">▶ Start practice</button>`+
+    `<button class="sleep-btn" data-ex="${item.id}">☾ To fall asleep — no close</button>`+
+    `<p class="sleep-note">Use this only lying in bed to fall asleep — it omits the close and lets you drift. Any other time, always finish with the close.</p>`+
+    `<button class="card-btn" data-ex="${item.id}">▤ Practice card — run it from memory</button>`+
+    `<button class="card-btn log-btn" data-ex="${item.id}">✎ Log a practice</button></div>`;
 }
 function practiceCardHtml(item){
   const formulae = item.stages.map(s=>s.formulae.map(clipText).join(', ')).join(' → ');
@@ -196,7 +275,8 @@ function critBlock(item){
   const a=state.crit[item.id]||[false,false,false,false];
   return `<div class="crit"><span class="crit-label">Tick each as it becomes true — ready to move on when all four are</span><ul>`+
     DATA.progressionCriteria.map((c,i)=>`<li class="crit-item" data-ex="${item.id}" data-i="${i}"><button class="box ${a[i]?'on':''}">${a[i]?'✓':''}</button><span>${esc(c)}</span></li>`).join('')+
-    `</ul><button class="ready-btn" data-ex="${item.id}"></button></div>`;
+    `</ul><div class="log-ev" data-ex="${item.id}">${evidenceHtml(item.id)}</div>`+
+    `<button class="ready-btn" data-ex="${item.id}"></button></div>`;
 }
 function card(item){
   const isEx=item.type==='exercise';
@@ -252,7 +332,9 @@ function renderLadder(){
   });
   ladderEl.innerHTML=html;
   ladderEl.querySelectorAll('.card-head[data-toggle]').forEach(h=>h.addEventListener('click',()=>toggleCard(h.dataset.toggle)));
-  ladderEl.querySelectorAll('.card-btn[data-ex]').forEach(b=>b.addEventListener('click',()=>openModal(practiceCardHtml(itemById(b.dataset.ex)))));
+  ladderEl.querySelectorAll('.card-btn[data-ex]:not(.log-btn)').forEach(b=>b.addEventListener('click',()=>openModal(practiceCardHtml(itemById(b.dataset.ex)))));
+  ladderEl.querySelectorAll('.log-btn[data-ex]').forEach(b=>b.addEventListener('click',()=>promptLog(b.dataset.ex,false)));
+  ladderEl.querySelectorAll('.log-ev .log-view[data-ex]').forEach(b=>b.addEventListener('click',()=>openLogModal(b.dataset.ex)));
   ladderEl.querySelectorAll('.play[data-src]').forEach(b=>b.addEventListener('click',()=>startTrack(b)));
   ladderEl.querySelectorAll('.crit-item').forEach(li=>li.addEventListener('click',()=>toggleCrit(li.dataset.ex,+li.dataset.i,li.querySelector('.box'))));
   ladderEl.querySelectorAll('.ready-btn[data-ex]').forEach(b=>b.addEventListener('click',()=>markReady(b.dataset.ex)));
@@ -261,16 +343,29 @@ function renderLadder(){
   }));
   ladderEl.querySelectorAll('.start-btn').forEach(b=>b.addEventListener('click',()=>{
     const ex=itemById(b.dataset.ex); const sel=ladderEl.querySelector(`.stage[data-ex="${b.dataset.ex}"].on`); const idx=sel?+sel.dataset.stage:0;
-    runSession(buildShort(ex,idx), ex.title);
+    runSession(buildShort(ex,idx), ex.title, ex.id);
+  }));
+  ladderEl.querySelectorAll('.sleep-btn').forEach(b=>b.addEventListener('click',()=>{
+    const ex=itemById(b.dataset.ex); const sel=ladderEl.querySelector(`.stage[data-ex="${b.dataset.ex}"].on`); const idx=sel?+sel.dataset.stage:0;
+    runSession(buildSleep(ex,idx), ex.title+' · to fall asleep', ex.id, true);
   }));
   DATA.items.filter(it=>it.type==='exercise').forEach(it=>refreshReady(it.id));
   updateProgress(); refreshCards(); refreshOffline();
 }
 
+/* practice log toolbar button */
+$('logBtn') && ($('logBtn').onclick=()=>openLogModal());
+
 /* full session toolbar button */
 $('fullBtn') && ($('fullBtn').onclick=()=>{
   if(learnedCount()===0){ openModal(`<h3>Full session</h3><p>Once you've marked an exercise or two as ready, this builds a full session from everything you've learned — run in sequence, with a single close at the end.</p>`); return; }
-  runSession(buildFull(), 'Full session');
+  runSession(buildFull(), 'Full session', 'full');
+});
+
+/* full session, no close — for falling asleep in bed */
+$('fullSleepBtn') && ($('fullSleepBtn').onclick=()=>{
+  if(learnedCount()===0){ openModal(`<h3>To fall asleep</h3><p>Once you've learned an exercise or two, this runs the full sequence lying in bed and leaves the close out, so you can drift off. Use it only for sleep — every waking practice ends with the close.</p>`); return; }
+  runSession(stripClose(buildFull()), 'Full session · to fall asleep', 'full', true);
 });
 
 /* safety gate */
