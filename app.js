@@ -362,12 +362,6 @@ $('fullBtn') && ($('fullBtn').onclick=()=>{
   runSession(buildFull(), 'Full session', 'full');
 });
 
-/* full session, no close — for falling asleep in bed */
-$('fullSleepBtn') && ($('fullSleepBtn').onclick=()=>{
-  if(learnedCount()===0){ openModal(`<h3>To fall asleep</h3><p>Once you've learned an exercise or two, this runs the full sequence lying in bed and leaves the close out, so you can drift off. Use it only for sleep — every waking practice ends with the close.</p>`); return; }
-  runSession(stripClose(buildFull()), 'Full session · to fall asleep', 'full', true);
-});
-
 /* safety gate */
 function safetyGate(){ $('safetyList').innerHTML=SAFETY_ITEMS.map(s=>`<li>${esc(s)}</li>`).join(''); const g=$('safetyGate'),chk=$('safetyCheck'),go=$('safetyProceed'); chk.onchange=()=>{ go.disabled=!chk.checked; }; go.onclick=()=>{ state.safetyAck=true; save(); g.hidden=true; }; g.hidden=false; }
 

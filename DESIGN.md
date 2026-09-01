@@ -27,7 +27,7 @@ track is shared across exercises.
 ## The close is non-negotiable
 Every guided/timed track ends with the cancellation; the silent-practice track ends with a spoken close reminder. The bedtime exception is stated in "The close".
 
-**The one exception, in the app.** Each exercise (and the full session) offers a secondary "☾ To fall asleep — no close" button. It runs the *settled cumulative* pass (never the beginner drill), strips the trailing close (`stripClose`), and — because you're meant to be drifting off — does **not** raise the post-session log prompt. Every other start button ends with the close. The button carries an inline caution that it is for bed only.
+**The one exception, in the app.** Every exercise — heaviness included, from day one — offers a secondary "☾ To fall asleep — no close" button; a single exercise repeated to drift off is enough, so there is deliberately no full-session sleep variant. It runs the *settled cumulative* pass (never the beginner drill), strips the trailing close (`stripClose`), and — because you're meant to be drifting off — does **not** raise the post-session log prompt. Every other start button ends with the close. The button carries an inline caution that it is for bed only.
 
 ## Practice log — the fifth step of the session
 The taught session shape is *Position · Settle · Formula · Close · **Log***, and the welcome asks the learner to "keep a short log so you can see your progress." The app makes that real:
