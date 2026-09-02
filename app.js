@@ -65,8 +65,20 @@ function sessionTick(){
   if(!session) return;
   if(!session.paused){ const now=performance.now(); session.elapsed=Math.min(session.total, session.elapsed+(now-session.lastTick)/1000); }
   session.lastTick=performance.now();
+  if(session.seeking) return;   // user is dragging the bar — don't fight the thumb
   const pct=session.total? Math.round(session.elapsed/session.total*1000):0;
   mini.seek.value=pct; mini.cur.textContent=fmt(session.elapsed); mini.dur.textContent=fmt(session.total);
+}
+// Seek a session by snapping to the step (clip or pause) that contains time t.
+function seekSession(t){
+  if(!session) return;
+  let acc=0, idx=session.steps.length-1;
+  for(let i=0;i<session.steps.length;i++){ const d=stepDur(session.steps[i]); if(acc+d>t){ idx=i; break; } acc+=d; }
+  clearTimeout(session.timer); try{ player.pause(); }catch(e){}
+  session.i=idx; session.elapsed=acc; session.paused=false; session.lastTick=performance.now();
+  mini.play.textContent='❚❚';
+  mini.seek.value=session.total?Math.round(acc/session.total*1000):0; mini.cur.textContent=fmt(acc);
+  stepSession();
 }
 function runSession(steps, title, exId, sleep){
   stopSession(); if(activeBtn){ setBtn(activeBtn,false); activeBtn=null; }
@@ -94,7 +106,11 @@ function stopSession(){ if(session){ clearTimeout(session.timer); clearInterval(
 function endSession(){ let ex=null, sleep=false; if(session){ session.elapsed=session.total; sessionTick(); ex=session.exId; sleep=session.sleep; } stopSession(); if(ex && !sleep) setTimeout(()=>promptLog(ex,true), 500); }
 mini.play.onclick=()=>{ if(session) toggleSession(); else if(player.src) player.paused?player.play():player.pause(); };
 mini.restart.onclick=()=>{ if(session) stopSession(); else if(player.src){ player.currentTime=0; player.play(); } };
-mini.seek.oninput=()=>{ if(!session && player.duration) player.currentTime=mini.seek.value/1000*player.duration; };
+mini.seek.oninput=()=>{
+  if(session){ session.seeking=true; mini.cur.textContent=fmt(mini.seek.value/1000*session.total); }
+  else if(player.duration){ player.currentTime=mini.seek.value/1000*player.duration; }
+};
+mini.seek.onchange=()=>{ if(session){ seekSession(mini.seek.value/1000*session.total); session.seeking=false; } };
 
 /* ================= build sessions ================= */
 const clipText=(k)=>(DATA.clips[k]&&DATA.clips[k].text)||k;
