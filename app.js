@@ -122,15 +122,18 @@ const isOnboarding=(ex,stageIdx)=> ex.id==='heaviness' && (stageIdx||0)===0;
 function openingSteps(){ return [{key:'settle'},{pause:3},{key:scanKey()},{pause:4},{key:'calm'},{pause:3}]; }
 // Very first formula: the beginner drill — 3 cycles of [formula ×repsPerFormula
 // → cancel], per Kai's protocol ("repeat the whole exercise between
-// cancellations, 3 times"). Cancelling and re-entering is the method. The scan
-// runs once at the start, not between cycles. Final cancel = the full close.
+// cancellations, 3 times"). The full cancel (eyes open) IS the point — it
+// rehearses cancelling — so between cycles a short `reenter` clip re-closes the
+// eyes and settles before repeating (otherwise you'd be left eyes-open). The
+// scan runs once at the start, not between cycles. Final cancel = the full close.
 function buildOnboarding(){
   const c=DATA.shortExercise, steps=openingSteps();
   for(let cy=0;cy<c.cycles;cy++){
+    if(cy>0) steps.push({key:'reenter'},{pause:2});             // after a cancel opened the eyes, re-close and settle before repeating
     for(let r=0;r<c.repsPerFormula;r++){ steps.push({key:sideClip('hv_rarm')},{pause:c.formulaPause}); }
     const lastCycle = cy===c.cycles-1;
     if(lastCycle) steps.push({key:'close'});                    // final cancel = full close (with the switch phrase)
-    else steps.push({key:'qcancel'},{pause:c.cancelPause});     // between cycles = quick cancel
+    else steps.push({key:'qcancel'},{pause:4});                 // between cycles: full quick cancel (eyes open), brief pause, then re-enter
   }
   return steps;
 }

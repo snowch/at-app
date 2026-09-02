@@ -1,0 +1,11 @@
+Now, we begin once more.
+
+<break time="1.5s" />
+
+Let your eyes gently close again.
+
+<break time="1.5s" />
+
+Settle, and take one slow breath.
+
+<break time="1.2s" />

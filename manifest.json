@@ -448,6 +448,11 @@
       "text": "Quick cancel",
       "durationSec": 8.9
     },
+    "reenter": {
+      "audio": "audio/clips/reenter.m4a?v=4c52df8c",
+      "text": "Settle again, eyes close",
+      "durationSec": 14.7
+    },
     "close": {
       "audio": "audio/clips/close.m4a?v=ea79cada",
       "text": "The close",
