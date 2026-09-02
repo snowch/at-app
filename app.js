@@ -261,10 +261,7 @@ function practiceBlock(item){
     ? 'Days 1–3: three cycles of the formula, each ending in a cancel — the beginner drill. Later stages run as one settled pass.'
     : 'Runs the exercises you have already learned (in short form), then this one, and ends with the close — building each time.';
   const handRow = item.id==='heaviness'
-    ? `<div class="hand-row"><span class="hand-label">Your dominant hand</span>`+
-      `<button class="hand ${state.handed==='right'?'on':''}" data-hand="right">Right</button>`+
-      `<button class="hand ${state.handed==='left'?'on':''}" data-hand="left">Left</button></div>`+
-      `<p class="practice-hint">Sets which side leads throughout — the body scan and the “dominant arm” formula. AT starts with your dominant side.</p>`
+    ? `<p class="practice-hint">AT starts with your <strong>dominant</strong> side — you're set to <strong>${state.handed}-handed</strong>. Change it in ⚙ Settings.</p>`
     : '';
   return `<div class="practice"><span class="crit-label">Practise</span>`+
     handRow+
@@ -354,7 +351,6 @@ function renderLadder(){
   ladderEl.querySelectorAll('.card-head[data-toggle]').forEach(h=>h.addEventListener('click',()=>toggleCard(h.dataset.toggle)));
   ladderEl.querySelectorAll('.card-btn[data-ex]:not(.log-btn)').forEach(b=>b.addEventListener('click',()=>openModal(practiceCardHtml(itemById(b.dataset.ex)))));
   ladderEl.querySelectorAll('.log-btn[data-ex]').forEach(b=>b.addEventListener('click',()=>promptLog(b.dataset.ex,false)));
-  ladderEl.querySelectorAll('.hand[data-hand]').forEach(b=>b.addEventListener('click',()=>{ if(state.handed!==b.dataset.hand){ state.handed=b.dataset.hand; save(); renderLadder(); } }));
   ladderEl.querySelectorAll('.log-ev .log-view[data-ex]').forEach(b=>b.addEventListener('click',()=>openLogModal(b.dataset.ex)));
   ladderEl.querySelectorAll('.play[data-src]').forEach(b=>b.addEventListener('click',()=>startTrack(b)));
   ladderEl.querySelectorAll('.crit-item').forEach(li=>li.addEventListener('click',()=>toggleCrit(li.dataset.ex,+li.dataset.i,li.querySelector('.box'))));

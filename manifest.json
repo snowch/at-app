@@ -185,19 +185,19 @@
       },
       "stages": [
         {
-          "label": "Dominant arm",
+          "label": "Dominant arm · days 1–3",
           "formulae": [
             "wm_rarm"
           ]
         },
         {
-          "label": "Both arms",
+          "label": "Both arms · days 4–6",
           "formulae": [
             "wm_arms"
           ]
         },
         {
-          "label": "Arms & legs",
+          "label": "Arms & legs · days 7–14",
           "formulae": [
             "wm_all"
           ]
