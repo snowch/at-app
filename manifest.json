@@ -417,14 +417,14 @@
   ],
   "clips": {
     "settle": {
-      "audio": "audio/clips/settle.m4a?v=ad1e1fa5",
-      "text": "Settle, and scan",
-      "durationSec": 9.2
+      "audio": "audio/clips/settle.m4a?v=6a48895d",
+      "text": "Settle into position",
+      "durationSec": 51.8
     },
     "scan": {
-      "audio": "audio/clips/scan.m4a?v=5c7d0c69",
-      "text": "A passive body sweep",
-      "durationSec": 9.5
+      "audio": "audio/clips/scan.m4a?v=9a07988e",
+      "text": "A guided body scan",
+      "durationSec": 89.2
     },
     "calm": {
       "audio": "audio/clips/calm.m4a?v=464a2190",

@@ -13,6 +13,15 @@ silence · chime · close). The learner ends every stage practising unaided, whi
 is what makes the collapsed full sequence possible later. The silent-practice
 track is shared across exercises.
 
+**Shared opening (`openingSteps`).** Every guided session — onboarding drill,
+cumulative, and full — opens the same way: **settle into position** (posture:
+lie or sit well-supported, symmetrical, nothing held, eyes close), a **detailed
+passive body scan** (face → jaw/neck/shoulders → each arm → chest/abdomen →
+back → each leg → whole body), then the calming formula. Clip sources live in
+`content/clips/` and render with the guided voice (`tools/pp.py`, af_nicole).
+The clips carry their own internal `<break>` pacing, so between-clip gaps are
+short. (The full session previously skipped the scan; it no longer does.)
+
 ## Data model (manifest.json)
 - Framework items are `type: "orientation"`; the six exercises + neck/shoulders are `type: "exercise"`.
 - Each exercise carries: `formula`, `week`, `prerequisites`, and where relevant `caution`, `skippable`, `note`.

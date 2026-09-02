@@ -92,9 +92,13 @@ mini.seek.oninput=()=>{ if(!session && player.duration) player.currentTime=mini.
 const clipText=(k)=>(DATA.clips[k]&&DATA.clips[k].text)||k;
 const LEARN_ORDER=['heaviness','warmth','heartbeat','neck-shoulders','breathing','solar-plexus','forehead'];
 const isOnboarding=(ex,stageIdx)=> ex.id==='heaviness' && (stageIdx||0)===0;
+// Shared opening for every guided session: settle into position, a detailed
+// body scan, then the calming formula. The clips now carry their own internal
+// pacing, so the gaps between them are short.
+function openingSteps(){ return [{key:'settle'},{pause:3},{key:'scan'},{pause:4},{key:'calm'},{pause:3}]; }
 // Very first formula: the pure repetition drill — 3 cycles of [formula ×3 → cancel]
 function buildOnboarding(){
-  const c=DATA.shortExercise, steps=[{key:'settle'},{pause:c.settlePause},{key:'scan'},{pause:6},{key:'calm'},{pause:3}];
+  const c=DATA.shortExercise, steps=openingSteps();
   for(let cy=0;cy<c.cycles;cy++){
     for(let r=0;r<c.repsPerFormula;r++){ steps.push({key:'hv_rarm'},{pause:c.formulaPause}); }
     const lastCycle = cy===c.cycles-1;
@@ -109,7 +113,7 @@ function buildCumulative(ex, stageIdx){
   const upto=LEARN_ORDER.slice(0, LEARN_ORDER.indexOf(ex.id)+1);
   let seq=DATA.fullSession.order.filter(id=>upto.includes(id));
   if(upto.includes('neck-shoulders')) seq.push('neck-shoulders');   // suffix, always last
-  const steps=[{key:'settle'},{pause:6},{key:'scan'},{pause:6},{key:'calm'},{pause:3}];
+  const steps=openingSteps();
   for(const id of seq){
     const it=itemById(id); const cur=id===ex.id;
     const formulae=cur?((ex.stages[stageIdx]||ex.stages[0]).formulae):[it.collapsed];
@@ -126,7 +130,7 @@ const stripClose=(steps)=>{ const s=steps.slice(); if(s.length && s[s.length-1].
 function buildSleep(ex, stageIdx){ return stripClose(buildCumulative(ex, stageIdx||0)); }
 function buildFull(){
   const c=DATA.fullSession, steps=[];
-  steps.push({key:'settle'},{pause:6,label:'·'},{key:'calm',label:clipText('calm')},{pause:4,label:'·'});
+  steps.push(...openingSteps());
   const run=[];
   for(const id of c.order){ if(learned(id)){ const ex=itemById(id); if(ex&&ex.collapsed) run.push(ex.collapsed); } }
   if(learned('neck-shoulders')) run.push(c.suffix);
@@ -261,7 +265,8 @@ function practiceCardHtml(item){
   const formulae = item.stages.map(s=>s.formulae.map(clipText).join(', ')).join(' → ');
   const c=DATA.shortExercise;
   return `<h3>${esc(item.title)} — practice card</h3>`+
-    `<p><strong>Position &amp; scan.</strong> Settle in your posture, eyes closed, a few slow breaths, then a passive sweep through the body — changing nothing.</p>`+
+    `<p><strong>Position.</strong> Lie on your back or sit well supported — symmetrical, fully supported, nothing held. One slow breath, and let the eyes close.</p>`+
+    `<p><strong>Body scan.</strong> A slow, passive sweep, changing nothing: forehead and face, jaw, neck and shoulders; each arm to the fingertips; chest and abdomen; the whole back; each leg to the toes; then the whole body, at rest.</p>`+
     `<p><strong>Formula.</strong> <em>“${esc(item.formula)}”</em>${item.expands?`<br><span class="muted">expands: ${esc(item.expands)}</span>`:''}</p>`+
     (item.id==='heaviness'
       ? `<p><strong>The short exercise (days 1–3).</strong> ${c.cycles} cycles, each: the formula ×${c.repsPerFormula}, then a quick cancel.</p>`
