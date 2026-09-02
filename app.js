@@ -153,7 +153,7 @@ function buildCumulative(ex, stageIdx){
   for(const id of seq){
     const it=itemById(id); const cur=id===ex.id;
     const formulae=cur?((ex.stages[stageIdx]||ex.stages[0]).formulae):[it.collapsed];
-    const reps=cur?(formulae.length>2?2:c.repsPerFormula):3;   // long limb-sweeps: fewer reps per limb so the session stays reasonable
+    const reps=cur?c.repsPerFormula:3;   // each limb repeated fully — the practice is unhurried, not a race
     for(const fk of formulae){ for(let r=0;r<reps;r++){ steps.push({key:sideClip(fk)},{pause:c.formulaPause}); } }
   }
   if(upto.includes('neck-shoulders')){ for(let r=0;r<3;r++) steps.push({key:'peace'},{pause:3}); }
