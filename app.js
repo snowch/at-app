@@ -120,7 +120,10 @@ const isOnboarding=(ex,stageIdx)=> ex.id==='heaviness' && (stageIdx||0)===0;
 // body scan, then the calming formula. The clips now carry their own internal
 // pacing, so the gaps between them are short.
 function openingSteps(){ return [{key:'settle'},{pause:3},{key:scanKey()},{pause:4},{key:'calm'},{pause:3}]; }
-// Very first formula: the pure repetition drill — 3 cycles of [formula ×3 → cancel]
+// Very first formula: the beginner drill — 3 cycles of [formula ×repsPerFormula
+// → cancel], per Kai's protocol ("repeat the whole exercise between
+// cancellations, 3 times"). Cancelling and re-entering is the method. The scan
+// runs once at the start, not between cycles. Final cancel = the full close.
 function buildOnboarding(){
   const c=DATA.shortExercise, steps=openingSteps();
   for(let cy=0;cy<c.cycles;cy++){
