@@ -45,8 +45,8 @@
       "parts": {
         "teaching": {
           "script": "content/at_00_welcome.txt",
-          "audio": "audio/at_00_welcome.m4a?v=478cf6e4",
-          "durationSec": 120.7,
+          "audio": "audio/at_00_welcome.m4a?v=97c4d2a1",
+          "durationSec": 137.5,
           "status": "built"
         }
       }
