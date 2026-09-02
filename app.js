@@ -266,7 +266,7 @@ function practiceBlock(item){
   return `<div class="practice"><span class="crit-label">Practise</span>`+
     handRow+
     (multi?`<div class="stages-row">${stageBtns}</div>`:'')+
-    `<p class="practice-hint">${hint} ${multi?'Pick the stage you are on.':''}</p>`+
+    `<p class="practice-hint">${hint} ${multi?'Pick the stage you are on.':'One formula — practise about a week, three times a day, until the four criteria hold.'}</p>`+
     `<button class="start-btn" data-ex="${item.id}">▶ Start practice</button>`+
     `<button class="sleep-btn" data-ex="${item.id}">☾ To fall asleep — no close</button>`+
     `<p class="sleep-note">Use this only lying in bed to fall asleep — it omits the close and lets you drift. Any other time, always finish with the close.</p>`+
@@ -297,7 +297,8 @@ function critBlock(item){
 }
 function card(item){
   const isEx=item.type==='exercise';
-  const badges=isEx?`<span class="badge ex">Exercise ${item.exercise}</span><span class="badge week">Week ${item.week}</span>${item.skippable?'<span class="badge">skippable</span>':''}`:`<span class="badge">${item.safety?'Safety':'Orientation'}</span>`;
+  const weekBadge=item.weeks?`Weeks ${item.weeks}`:`Week ${item.week}`;
+  const badges=isEx?`<span class="badge ex">Exercise ${item.exercise}</span><span class="badge week">${weekBadge}</span>${item.skippable?'<span class="badge">skippable</span>':''}`:`<span class="badge">${item.safety?'Safety':'Orientation'}</span>`;
   const formula=item.formula?`<div class="formula">${esc(domText(item.formula))}</div>`:'';
   const caution=item.caution?`<div class="caution"><b>Caution.</b> ${esc(item.caution)}</div>`:'';
   const note=item.note?`<p class="expands">${esc(item.note)}</p>`:'';

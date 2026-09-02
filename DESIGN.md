@@ -28,6 +28,18 @@ that "letting go toward the ground" quality; it also matches AT's own settling
 phrasing. Feet-up is the MBSR convention (a different, mindfulness framing) and
 is intentionally not used here.
 
+**Scan is strictly passive & posture-neutral.** It only *names and notices* —
+no "let it soften" or any instruction to change something (that would break
+passive concentration). Wording avoids assuming a posture ("the whole of your
+back, and wherever it is supported"), since setup allows lying *or* seated. Each
+limb is walked part-by-part with its own short beat (~1.8 min total).
+
+**Week spans vs single weeks.** The card badge shows `weeks` ("Weeks 1–2") when
+an exercise runs its limb sub-progression over 14 days (heaviness, warmth), and
+`Week N` otherwise. Single-formula exercises (heartbeat onward) have no
+per-stage day labels because there are no sub-stages — their pacing is the week
+badge plus the "one week + criteria" gate.
+
 **Handedness — AT keys the *dominant* limb, not literally the right.** A
 `state.handed` setting (default right; toggled on the heaviness card) drives
 three things via `sideClip`/`scanKey`/`domText`: the heaviness/warmth

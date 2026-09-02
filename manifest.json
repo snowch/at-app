@@ -115,6 +115,7 @@
       "type": "exercise",
       "exercise": 1,
       "week": 1,
+      "weeks": "1–2",
       "formula": "My right arm is heavy",
       "expands": "dominant arm \u2192 other arm \u2192 both arms \u2192 legs \u2192 arms and legs are heavy",
       "prerequisites": [
@@ -164,6 +165,7 @@
       "type": "exercise",
       "exercise": 2,
       "week": 3,
+      "weeks": "3–4",
       "formula": "My right arm is warm",
       "caution": "Avoid directing warmth to any area of acute inflammation, injury, or infection.",
       "prerequisites": [
@@ -422,14 +424,14 @@
       "durationSec": 51.8
     },
     "scan": {
-      "audio": "audio/clips/scan.m4a?v=9a07988e",
+      "audio": "audio/clips/scan.m4a?v=2d7c1e40",
       "text": "A guided body scan",
-      "durationSec": 89.2
+      "durationSec": 110.7
     },
     "scan_l": {
-      "audio": "audio/clips/scan_l.m4a?v=a8b6eafb",
+      "audio": "audio/clips/scan_l.m4a?v=584e379c",
       "text": "A guided body scan (left-dominant)",
-      "durationSec": 89.2
+      "durationSec": 110.7
     },
     "calm": {
       "audio": "audio/clips/calm.m4a?v=464a2190",

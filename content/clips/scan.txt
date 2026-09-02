@@ -1,39 +1,103 @@
-Now, a slow and passive sweep through the body. Simply noticing each part in turn, and changing nothing.
+Now, a slow and passive sweep through the body. Simply noticing each part in turn, wanting nothing, and changing nothing.
 
 <break time="2.5s" />
 
-Bring your attention to your forehead, and your face. Let them soften.
+Your forehead, and your face.
+
+<break time="2.0s" />
+
+Your jaw.
+
+<break time="1.5s" />
+
+Your neck, and your shoulders.
 
 <break time="2.5s" />
 
-Your jaw. Your neck. And your shoulders.
+Your right arm.
+
+<break time="1.8s" />
+
+The upper arm.
+
+<break time="1.8s" />
+
+The forearm.
+
+<break time="1.8s" />
+
+The hand.
+
+<break time="1.8s" />
+
+And each finger, in turn.
 
 <break time="2.5s" />
 
-Your right arm. The upper arm, the forearm, the hand, and each finger.
+Your left arm.
+
+<break time="1.8s" />
+
+The upper arm.
+
+<break time="1.8s" />
+
+The forearm.
+
+<break time="1.8s" />
+
+The hand.
+
+<break time="1.8s" />
+
+And each finger, in turn.
 
 <break time="2.5s" />
 
-Your left arm. The upper arm, the forearm, the hand, and each finger.
+Your chest.
+
+<break time="1.8s" />
+
+And your abdomen, rising and falling with the breath.
 
 <break time="2.5s" />
 
-Your chest. And your abdomen, rising and falling with the breath.
+The whole of your back, and wherever it is supported.
 
 <break time="2.5s" />
 
-The whole of your back, resting on the surface beneath you.
+Your right leg.
+
+<break time="1.8s" />
+
+The thigh.
+
+<break time="1.8s" />
+
+The knee, and the calf.
+
+<break time="1.8s" />
+
+The foot, and the toes.
 
 <break time="2.5s" />
 
-Your right leg. The thigh, the knee, the calf, the foot, and the toes.
+Your left leg.
+
+<break time="1.8s" />
+
+The thigh.
+
+<break time="1.8s" />
+
+The knee, and the calf.
+
+<break time="1.8s" />
+
+The foot, and the toes.
 
 <break time="2.5s" />
 
-Your left leg. The thigh, the knee, the calf, the foot, and the toes.
-
-<break time="2.5s" />
-
-And now the whole body, at rest, and completely supported.
+And now the whole body, at rest, and fully supported.
 
 <break time="1.5s" />
