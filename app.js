@@ -377,6 +377,25 @@ function renderLadder(){
 /* practice log toolbar button */
 $('logBtn') && ($('logBtn').onclick=()=>openLogModal());
 
+/* settings toolbar button — handedness (a global setting) */
+function settingsHtml(){
+  return `<h3>Settings</h3>`+
+    `<span class="crit-label">Your dominant hand</span>`+
+    `<p class="muted" style="font-size:.86rem">Autogenic Training starts with your dominant side. This sets which arm the heaviness and warmth formulae name, and which side the body scan leads with — across the whole programme.</p>`+
+    `<div class="hand-row"><span class="hand-label">Dominant hand</span>`+
+    `<button class="hand ${state.handed==='right'?'on':''}" data-hand="right">Right</button>`+
+    `<button class="hand ${state.handed==='left'?'on':''}" data-hand="left">Left</button></div>`;
+}
+function wireSettings(){
+  modalBody.querySelectorAll('.hand[data-hand]').forEach(b=>b.onclick=()=>{
+    if(state.handed!==b.dataset.hand){ state.handed=b.dataset.hand; save();
+      modalBody.querySelectorAll('.hand').forEach(x=>x.classList.toggle('on', x.dataset.hand===state.handed));
+      renderLadder();
+    }
+  });
+}
+$('settingsBtn') && ($('settingsBtn').onclick=()=>{ openModal(settingsHtml()); wireSettings(); });
+
 /* full session toolbar button */
 $('fullBtn') && ($('fullBtn').onclick=()=>{
   if(learnedCount()===0){ openModal(`<h3>Full session</h3><p>Once you've marked an exercise or two as ready, this builds a full session from everything you've learned — run in sequence, with a single close at the end.</p>`); return; }
