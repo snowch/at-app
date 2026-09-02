@@ -22,6 +22,22 @@ back → each leg → whole body), then the calming formula. Clip sources live i
 The clips carry their own internal `<break>` pacing, so between-clip gaps are
 short. (The full session previously skipped the scan; it no longer does.)
 
+**Scan direction — head-to-toe (deliberate).** The sweep runs face → feet, not
+feet → head. AT induces *heaviness and sinking*, and a downward sweep reinforces
+that "letting go toward the ground" quality; it also matches AT's own settling
+phrasing. Feet-up is the MBSR convention (a different, mindfulness framing) and
+is intentionally not used here.
+
+**Handedness — AT keys the *dominant* limb, not literally the right.** A
+`state.handed` setting (default right; toggled on the heaviness card) drives
+three things via `sideClip`/`scanKey`/`domText`: the heaviness/warmth
+"dominant arm" formula clip (`hv_rarm`↔`hv_larm`, `wm_rarm`↔`wm_larm`), the
+body-scan clip (`scan` right-dominant / `scan_l` left-dominant — same head-to-toe
+direction, dominant side named first), and the on-screen formula text
+("My right arm…"→"My left arm…"). Collapsed forms ("arms and legs are heavy")
+are symmetric and unaffected. This fixes a prior mismatch where the UI said
+"Dominant arm" but the audio always said "right".
+
 ## Data model (manifest.json)
 - Framework items are `type: "orientation"`; the six exercises + neck/shoulders are `type: "exercise"`.
 - Each exercise carries: `formula`, `week`, `prerequisites`, and where relevant `caution`, `skippable`, `note`.

@@ -21,6 +21,7 @@ const STORE='at-progress-v1';
 const state=JSON.parse(localStorage.getItem(STORE)||'{}');
 state.crit=state.crit||{}; state.ready=state.ready||{};
 state.log=Array.isArray(state.log)?state.log:[];   // practice log: {t, ex, s:'yes'|'partly'|'no', note}
+state.handed=(state.handed==='left'||state.handed==='right')?state.handed:'right';   // dominant side
 const save=()=>localStorage.setItem(STORE, JSON.stringify(state));
 const hasCaches='caches' in window;
 let DATA=null, offlineUrls=[], activeBtn=null;
@@ -30,6 +31,13 @@ const esc=(s)=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g
 const itemById=(id)=>DATA.items.find(it=>it.id===id);
 const learned=(id)=>!!state.ready[id];
 const exTitle=(id)=> id==='full' ? 'Full session' : ((itemById(id)||{}).title || id);
+
+/* handedness — AT keys the dominant limb, not literally the right */
+const HAND_SWAP={ hv_rarm:'hv_larm', hv_larm:'hv_rarm', hv_rleg:'hv_lleg', hv_lleg:'hv_rleg',
+                  wm_rarm:'wm_larm', wm_larm:'wm_rarm', wm_rleg:'wm_lleg', wm_lleg:'wm_rleg' };
+const sideClip=(k)=> (state.handed==='left' && HAND_SWAP[k]) ? HAND_SWAP[k] : k;   // pick the dominant-side formula clip
+const scanKey=()=> state.handed==='left' ? 'scan_l' : 'scan';                       // dominant-side-first body scan
+const domText=(s)=> (state.handed==='left' && s) ? String(s).replace(/right/g,'left') : s;  // "My right arm…" → "My left arm…"
 
 /* ================= playback ================= */
 let session=null;   // {steps,i,timer,paused}
@@ -95,12 +103,12 @@ const isOnboarding=(ex,stageIdx)=> ex.id==='heaviness' && (stageIdx||0)===0;
 // Shared opening for every guided session: settle into position, a detailed
 // body scan, then the calming formula. The clips now carry their own internal
 // pacing, so the gaps between them are short.
-function openingSteps(){ return [{key:'settle'},{pause:3},{key:'scan'},{pause:4},{key:'calm'},{pause:3}]; }
+function openingSteps(){ return [{key:'settle'},{pause:3},{key:scanKey()},{pause:4},{key:'calm'},{pause:3}]; }
 // Very first formula: the pure repetition drill — 3 cycles of [formula ×3 → cancel]
 function buildOnboarding(){
   const c=DATA.shortExercise, steps=openingSteps();
   for(let cy=0;cy<c.cycles;cy++){
-    for(let r=0;r<c.repsPerFormula;r++){ steps.push({key:'hv_rarm'},{pause:c.formulaPause}); }
+    for(let r=0;r<c.repsPerFormula;r++){ steps.push({key:sideClip('hv_rarm')},{pause:c.formulaPause}); }
     const lastCycle = cy===c.cycles-1;
     if(lastCycle) steps.push({key:'close'});                    // final cancel = full close (with the switch phrase)
     else steps.push({key:'qcancel'},{pause:c.cancelPause});     // between cycles = quick cancel
@@ -118,7 +126,7 @@ function buildCumulative(ex, stageIdx){
     const it=itemById(id); const cur=id===ex.id;
     const formulae=cur?((ex.stages[stageIdx]||ex.stages[0]).formulae):[it.collapsed];
     const reps=cur?c.repsPerFormula:3;
-    for(const fk of formulae){ for(let r=0;r<reps;r++){ steps.push({key:fk},{pause:c.formulaPause}); } }
+    for(const fk of formulae){ for(let r=0;r<reps;r++){ steps.push({key:sideClip(fk)},{pause:c.formulaPause}); } }
   }
   if(upto.includes('neck-shoulders')){ for(let r=0;r<3;r++) steps.push({key:'peace'},{pause:3}); }
   steps.push({key:'close'});
@@ -134,7 +142,7 @@ function buildFull(){
   const run=[];
   for(const id of c.order){ if(learned(id)){ const ex=itemById(id); if(ex&&ex.collapsed) run.push(ex.collapsed); } }
   if(learned('neck-shoulders')) run.push(c.suffix);
-  for(const fk of run){ for(let r=0;r<c.reps;r++){ steps.push({key:fk,label:clipText(fk)},{pause:c.formulaPause,label:'·'}); } }
+  for(const fk of run){ for(let r=0;r<c.reps;r++){ steps.push({key:sideClip(fk),label:clipText(fk)},{pause:c.formulaPause,label:'·'}); } }
   steps.push({key:'peace',label:clipText('peace')},{pause:4,label:'·'},{key:'close',label:clipText('close')});
   return steps;
 }
@@ -252,7 +260,14 @@ function practiceBlock(item){
   const hint = item.id==='heaviness'
     ? 'Days 1–3: three cycles of the formula, each ending in a cancel — the beginner drill. Later stages run as one settled pass.'
     : 'Runs the exercises you have already learned (in short form), then this one, and ends with the close — building each time.';
+  const handRow = item.id==='heaviness'
+    ? `<div class="hand-row"><span class="hand-label">Your dominant hand</span>`+
+      `<button class="hand ${state.handed==='right'?'on':''}" data-hand="right">Right</button>`+
+      `<button class="hand ${state.handed==='left'?'on':''}" data-hand="left">Left</button></div>`+
+      `<p class="practice-hint">Sets which side leads throughout — the body scan and the “dominant arm” formula. AT starts with your dominant side.</p>`
+    : '';
   return `<div class="practice"><span class="crit-label">Practise</span>`+
+    handRow+
     (multi?`<div class="stages-row">${stageBtns}</div>`:'')+
     `<p class="practice-hint">${hint} ${multi?'Pick the stage you are on.':''}</p>`+
     `<button class="start-btn" data-ex="${item.id}">▶ Start practice</button>`+
@@ -267,10 +282,10 @@ function practiceCardHtml(item){
   return `<h3>${esc(item.title)} — practice card</h3>`+
     `<p><strong>Position.</strong> Lie on your back or sit well supported — symmetrical, fully supported, nothing held. One slow breath, and let the eyes close.</p>`+
     `<p><strong>Body scan.</strong> A slow, passive sweep, changing nothing: forehead and face, jaw, neck and shoulders; each arm to the fingertips; chest and abdomen; the whole back; each leg to the toes; then the whole body, at rest.</p>`+
-    `<p><strong>Formula.</strong> <em>“${esc(item.formula)}”</em>${item.expands?`<br><span class="muted">expands: ${esc(item.expands)}</span>`:''}</p>`+
+    `<p><strong>Formula.</strong> <em>“${esc(domText(item.formula))}”</em>${item.expands?`<br><span class="muted">expands: ${esc(item.expands)}</span>`:''}</p>`+
     (item.id==='heaviness'
       ? `<p><strong>The short exercise (days 1–3).</strong> ${c.cycles} cycles, each: the formula ×${c.repsPerFormula}, then a quick cancel.</p>`
-      : `<p><strong>The short exercise.</strong> First run the exercises you already know, each in its short form (e.g. “Arms and legs are heavy” ×3), then work this one — <em>“${esc(item.formula)}”</em> and its expansion — ${c.repsPerFormula}× each. One close at the end.</p>`)+
+      : `<p><strong>The short exercise.</strong> First run the exercises you already know, each in its short form (e.g. “Arms and legs are heavy” ×3), then work this one — <em>“${esc(domText(item.formula))}”</em> and its expansion — ${c.repsPerFormula}× each. One close at the end.</p>`)+
     (item.week>=5?`<p><strong>The tail.</strong> From here on, every session ends with <em>“My neck and shoulders are heavy”</em>, then <em>“I am at peace”</em>, then the close.</p>`:'')+
     (item.caution?`<div class="caution"><b>Caution.</b> ${esc(item.caution)}</div>`:'')+
     `<p><strong>The close.</strong> Say “Arms firm, breathe deeply, eyes open.” Make fists 3–4×, bend the arms, one deep breath, open the eyes.</p>`+
@@ -286,7 +301,7 @@ function critBlock(item){
 function card(item){
   const isEx=item.type==='exercise';
   const badges=isEx?`<span class="badge ex">Exercise ${item.exercise}</span><span class="badge week">Week ${item.week}</span>${item.skippable?'<span class="badge">skippable</span>':''}`:`<span class="badge">${item.safety?'Safety':'Orientation'}</span>`;
-  const formula=item.formula?`<div class="formula">${esc(item.formula)}</div>`:'';
+  const formula=item.formula?`<div class="formula">${esc(domText(item.formula))}</div>`:'';
   const caution=item.caution?`<div class="caution"><b>Caution.</b> ${esc(item.caution)}</div>`:'';
   const note=item.note?`<p class="expands">${esc(item.note)}</p>`:'';
   const prereq=(item.prerequisites&&item.prerequisites.length)?`<div class="prereq"><span class="prereq-label">Before you begin</span><ul>${item.prerequisites.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>`:'';
@@ -339,6 +354,7 @@ function renderLadder(){
   ladderEl.querySelectorAll('.card-head[data-toggle]').forEach(h=>h.addEventListener('click',()=>toggleCard(h.dataset.toggle)));
   ladderEl.querySelectorAll('.card-btn[data-ex]:not(.log-btn)').forEach(b=>b.addEventListener('click',()=>openModal(practiceCardHtml(itemById(b.dataset.ex)))));
   ladderEl.querySelectorAll('.log-btn[data-ex]').forEach(b=>b.addEventListener('click',()=>promptLog(b.dataset.ex,false)));
+  ladderEl.querySelectorAll('.hand[data-hand]').forEach(b=>b.addEventListener('click',()=>{ if(state.handed!==b.dataset.hand){ state.handed=b.dataset.hand; save(); renderLadder(); } }));
   ladderEl.querySelectorAll('.log-ev .log-view[data-ex]').forEach(b=>b.addEventListener('click',()=>openLogModal(b.dataset.ex)));
   ladderEl.querySelectorAll('.play[data-src]').forEach(b=>b.addEventListener('click',()=>startTrack(b)));
   ladderEl.querySelectorAll('.crit-item').forEach(li=>li.addEventListener('click',()=>toggleCrit(li.dataset.ex,+li.dataset.i,li.querySelector('.box'))));

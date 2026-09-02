@@ -426,6 +426,11 @@
       "text": "A guided body scan",
       "durationSec": 89.2
     },
+    "scan_l": {
+      "audio": "audio/clips/scan_l.m4a?v=a8b6eafb",
+      "text": "A guided body scan (left-dominant)",
+      "durationSec": 89.2
+    },
     "calm": {
       "audio": "audio/clips/calm.m4a?v=464a2190",
       "text": "I am completely calm",
