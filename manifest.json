@@ -45,8 +45,8 @@
       "parts": {
         "teaching": {
           "script": "content/at_00_welcome.txt",
-          "audio": "audio/at_00_welcome.m4a?v=97c4d2a1",
-          "durationSec": 137.5,
+          "audio": "audio/at_00_welcome.m4a?v=6249d322",
+          "durationSec": 135.6,
           "status": "built"
         }
       }
@@ -144,14 +144,22 @@
           ]
         },
         {
-          "label": "Both arms \u00b7 days 4\u20136",
+          "label": "Both arms \u00b7 days 4\u20137",
           "formulae": [
+            "hv_rarm",
+            "hv_larm",
             "hv_arms"
           ]
         },
         {
-          "label": "Arms & legs \u00b7 days 7\u201314",
+          "label": "Arms & legs \u00b7 days 8\u201314",
           "formulae": [
+            "hv_rarm",
+            "hv_larm",
+            "hv_arms",
+            "hv_rleg",
+            "hv_lleg",
+            "hv_legs",
             "hv_all"
           ]
         }
@@ -193,14 +201,22 @@
           ]
         },
         {
-          "label": "Both arms · days 4–6",
+          "label": "Both arms · days 4–7",
           "formulae": [
+            "wm_rarm",
+            "wm_larm",
             "wm_arms"
           ]
         },
         {
-          "label": "Arms & legs · days 7–14",
+          "label": "Arms & legs · days 8–14",
           "formulae": [
+            "wm_rarm",
+            "wm_larm",
+            "wm_arms",
+            "wm_rleg",
+            "wm_lleg",
+            "wm_legs",
             "wm_all"
           ]
         }

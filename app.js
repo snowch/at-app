@@ -120,6 +120,12 @@ const isOnboarding=(ex,stageIdx)=> ex.id==='heaviness' && (stageIdx||0)===0;
 // body scan, then the calming formula. The clips now carry their own internal
 // pacing, so the gaps between them are short.
 function openingSteps(){ return [{key:'settle'},{pause:3},{key:scanKey()},{pause:4},{key:'calm'},{pause:3}]; }
+const SETTLE_BEFORE_CANCEL=8;   // rest in the whole-body state before terminating
+function endSettleThen(steps, key){   // make the gap before a cancel/close a proper settle
+  if(steps.length && steps[steps.length-1].pause!=null) steps[steps.length-1]={pause:SETTLE_BEFORE_CANCEL};
+  else steps.push({pause:SETTLE_BEFORE_CANCEL});
+  steps.push({key});
+}
 // Very first formula: the beginner drill — 3 cycles of [formula ×repsPerFormula
 // → cancel], per Kai's protocol ("repeat the whole exercise between
 // cancellations, 3 times"). The full cancel (eyes open) IS the point — it
@@ -132,8 +138,8 @@ function buildOnboarding(){
     if(cy>0) steps.push({key:'reenter'},{pause:2});             // after a cancel opened the eyes, re-close and settle before repeating
     for(let r=0;r<c.repsPerFormula;r++){ steps.push({key:sideClip('hv_rarm')},{pause:c.formulaPause}); }
     const lastCycle = cy===c.cycles-1;
-    if(lastCycle) steps.push({key:'close'});                    // final cancel = full close (with the switch phrase)
-    else steps.push({key:'qcancel'},{pause:4});                 // between cycles: full quick cancel (eyes open), brief pause, then re-enter
+    if(lastCycle) endSettleThen(steps,'close');                 // settle, then the final cancel = full close (with the switch phrase)
+    else { endSettleThen(steps,'qcancel'); steps.push({pause:3}); }  // settle, quick cancel (eyes open), brief gap, then re-enter
   }
   return steps;
 }
@@ -147,11 +153,11 @@ function buildCumulative(ex, stageIdx){
   for(const id of seq){
     const it=itemById(id); const cur=id===ex.id;
     const formulae=cur?((ex.stages[stageIdx]||ex.stages[0]).formulae):[it.collapsed];
-    const reps=cur?c.repsPerFormula:3;
+    const reps=cur?(formulae.length>2?2:c.repsPerFormula):3;   // long limb-sweeps: fewer reps per limb so the session stays reasonable
     for(const fk of formulae){ for(let r=0;r<reps;r++){ steps.push({key:sideClip(fk)},{pause:c.formulaPause}); } }
   }
   if(upto.includes('neck-shoulders')){ for(let r=0;r<3;r++) steps.push({key:'peace'},{pause:3}); }
-  steps.push({key:'close'});
+  endSettleThen(steps,'close');
   return steps;
 }
 function buildShort(ex, stageIdx){ return isOnboarding(ex,stageIdx) ? buildOnboarding() : buildCumulative(ex, stageIdx||0); }
@@ -165,7 +171,8 @@ function buildFull(){
   for(const id of c.order){ if(learned(id)){ const ex=itemById(id); if(ex&&ex.collapsed) run.push(ex.collapsed); } }
   if(learned('neck-shoulders')) run.push(c.suffix);
   for(const fk of run){ for(let r=0;r<c.reps;r++){ steps.push({key:sideClip(fk),label:clipText(fk)},{pause:c.formulaPause,label:'·'}); } }
-  steps.push({key:'peace',label:clipText('peace')},{pause:4,label:'·'},{key:'close',label:clipText('close')});
+  steps.push({key:'peace',label:clipText('peace')},{pause:4,label:'·'});
+  endSettleThen(steps,'close');
   return steps;
 }
 function learnedCount(){ return DATA.fullSession.order.filter(learned).length + (learned('neck-shoulders')?1:0); }

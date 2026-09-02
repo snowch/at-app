@@ -14,7 +14,7 @@ You will learn six standard exercises, one at a time, over about ten weeks. Each
 
 <break time="1.5s" />
 
-As you go, you will hear two voices. This one guides the teachings, the short talks, like this one, that introduce each exercise. A second voice leads the guided practices themselves.
+As you go, you will hear two voices. One carries the teachings, the short talks like this, that introduce each exercise. The other guides the practices themselves.
 
 <break time="1.5s" />
 
