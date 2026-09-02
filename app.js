@@ -195,7 +195,6 @@ $('principleBtn').onclick=()=>openModal(`<h3>Passive concentration</h3><p>${esc(
 const DAY=86400000;
 const S_LABEL={yes:'On its own', partly:'Partly', no:'Not yet'};
 const logFor=(id)=> state.log.filter(e=>e.ex===id).sort((a,b)=>b.t-a.t);
-function weekStat(id){ const now=Date.now(); const es=state.log.filter(e=>e.ex===id && now-e.t < 7*DAY); return { n:es.length, came:es.filter(e=>e.s==='yes').length }; }
 function dayKey(t){ const d=new Date(t); return d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate(); }
 function todayCount(){ const k=dayKey(Date.now()); return state.log.filter(e=>dayKey(e.t)===k).length; }
 function streak(){ const days=new Set(state.log.map(e=>dayKey(e.t))); if(!days.size) return 0;
@@ -225,22 +224,13 @@ function promptLog(exId, postSession){
   let sel=null; const saveBtn=$('logSave');
   modalBody.querySelectorAll('.log-opt').forEach(b=>b.onclick=()=>{ sel=b.dataset.s; modalBody.querySelectorAll('.log-opt').forEach(x=>x.classList.toggle('on',x===b)); saveBtn.disabled=false; });
   $('logSkip').onclick=closeModal;
-  saveBtn.onclick=()=>{ if(!sel) return; state.log.push({t:Date.now(), ex:exId, s:sel, note:($('logNote').value||'').trim().slice(0,500)}); save(); closeModal(); if(itemById(exId)) refreshEvidence(exId); };
+  saveBtn.onclick=()=>{ if(!sel) return; state.log.push({t:Date.now(), ex:exId, s:sel, note:($('logNote').value||'').trim().slice(0,500)}); save(); closeModal(); if(itemById(exId)) renderLadder(); };
 }
 
-/* evidence line shown in the progression block */
-function evidenceHtml(id){
-  const total=logFor(id).length; if(!total) return `No practices logged yet — tap “Log a practice” after you sit.`;
-  const w=weekStat(id);
-  const s = w.n ? `came on its own in <strong>${w.came}</strong> of your last <strong>${w.n}</strong> this week` : `${total} logged`;
-  return `Your log · ${s} · <button class="log-view" data-ex="${id}">view all</button>`;
-}
-function refreshEvidence(id){ const el=ladderEl.querySelector(`.log-ev[data-ex="${id}"]`); if(!el) return; el.innerHTML=evidenceHtml(id); const v=el.querySelector('.log-view'); if(v) v.onclick=()=>openLogModal(id); }
-
-/* history modal — one exercise, or the whole log */
+/* history list (one exercise, or the whole log) */
 function logListHtml(exId){
   const es = exId ? logFor(exId) : [...state.log].sort((a,b)=>b.t-a.t);
-  if(!es.length) return `<p class="muted">No entries yet. After a practice, tap “Log a practice”.</p>`;
+  if(!es.length) return `<p class="muted">No sittings logged yet. After a practice, tap “Log a sitting”.</p>`;
   return `<ul class="log-list">`+es.map(e=>`<li class="log-item"><div class="log-item-h">`+
     `<span class="log-badge ${e.s}">${S_LABEL[e.s]||e.s}</span>`+
     (exId?'':`<span class="log-ex">${esc(exTitle(e.ex))}</span>`)+
@@ -249,26 +239,69 @@ function logListHtml(exId){
     (e.note?`<div class="log-item-note">${esc(e.note)}</div>`:'')+`</li>`).join('')+`</ul>`;
 }
 function wireLogList(exId){
-  modalBody.querySelectorAll('.log-del').forEach(b=>b.onclick=()=>{ const t=+b.dataset.t; state.log=state.log.filter(e=>e.t!==t); save();
-    const wrap=$('logListWrap'); if(wrap){ wrap.innerHTML=logListHtml(exId); wireLogList(exId); } const h=$('logHead'); if(h) h.innerHTML=logHeadHtml();
-    DATA.items.filter(it=>it.type==='exercise').forEach(it=>refreshEvidence(it.id)); });
+  modalBody.querySelectorAll('.log-del').forEach(b=>b.onclick=()=>{ const t=+b.dataset.t; state.log=state.log.filter(e=>e.t!==t); save(); renderLadder(); openLogModal(exId); });
 }
 function logHeadHtml(){ return `Aim for three short practices a day. <strong>${todayCount()}</strong> today${streak()>1?` · ${streak()}-day streak`:''}.`; }
-function openLogModal(exId){
-  const heading = exId ? `${esc(exTitle(exId))} — log` : 'Practice log';
-  const head = exId ? `<p>Ticking your progression is honest when the log backs it up.</p>` : `<p id="logHead">${logHeadHtml()}</p>`;
-  openModal(`<h3>${heading}</h3>${head}<div id="logListWrap">${logListHtml(exId)}</div>`+
-    `<p class="log-priv">Your log is kept only on this device — nothing is uploaded. Clearing the app’s site data erases it.</p>`);
+
+/* per-exercise progress hub: the criteria (as guidance) + the log evidence + mark-ready + sittings */
+function progressHubHtml(exId){
+  const r=readiness(exId);
+  const crit=DATA.progressionCriteria.map(c=>`<li>${esc(c)}</li>`).join('');
+  const evid = r.n ? `The sensation came on its own in <strong>${r.came}</strong> of your last <strong>${r.n}</strong> sittings this week.` : `No sittings logged this week yet — log each one and this fills in.`;
+  const ready=state.ready[exId];
+  const btn = ready
+    ? `<button class="ready-btn done" data-ex="${exId}">✓ Marked ready — you may move on (tap to undo)</button>`
+    : `<button class="ready-btn ${r.openable?'armed':''}" data-ex="${exId}">${r.openable?'Ready — mark it, and move on':'Mark ready to move on'}</button>`;
+  return `<div class="hub-sec"><span class="crit-label">Ready to move on when</span><ul class="crit-guide">${crit}</ul>`+
+    `<p class="hub-ev">${evid}</p>${btn}`+
+    `<button class="card-btn log-btn" data-ex="${exId}">✎ Log a sitting</button></div>`;
+}
+function wireHub(exId){
+  const rb=modalBody.querySelector('.ready-btn[data-ex]'); if(rb) rb.onclick=()=>{ markReady(exId); openLogModal(exId); };
+  const lb=modalBody.querySelector('.log-btn[data-ex]'); if(lb) lb.onclick=()=>promptLog(exId,false);
   wireLogList(exId);
 }
+function openLogModal(exId){
+  if(exId){
+    openModal(`<h3>${esc(exTitle(exId))}</h3>`+ progressHubHtml(exId) +
+      `<div class="hub-sec"><span class="crit-label">Your sittings</span><div id="logListWrap">${logListHtml(exId)}</div></div>`+
+      `<p class="log-priv">Kept only on this device — nothing is uploaded.</p>`);
+    wireHub(exId);
+  } else {
+    openModal(`<h3>Practice log</h3><p id="logHead">${logHeadHtml()}</p><div id="logListWrap">${logListHtml(null)}</div>`+
+      `<p class="log-priv">Your log is kept only on this device — nothing is uploaded. Clearing the app’s site data erases it.</p>`);
+    wireLogList(null);
+  }
+}
 
-/* ================= progression ================= */
-function toggleCrit(exId,i,box){ const a=state.crit[exId]||[false,false,false,false]; a[i]=!a[i]; state.crit[exId]=a; box.classList.toggle('on',a[i]); box.textContent=a[i]?'✓':''; save(); refreshReady(exId); }
-function refreshReady(exId){ const a=state.crit[exId]||[]; const all=a.length===4&&a.every(Boolean); const btn=document.querySelector(`.ready-btn[data-ex="${exId}"]`); if(!btn) return;
-  if(state.ready[exId]){ btn.className='ready-btn done'; btn.textContent='✓ Marked ready — you may move on'; }
-  else if(all){ btn.className='ready-btn armed'; btn.textContent='All four met — mark ready to move on'; }
-  else { btn.className='ready-btn'; btn.textContent='Meet all four criteria (plus one week) to advance'; } }
-function markReady(exId){ const a=state.crit[exId]||[]; if(!(a.length===4&&a.every(Boolean))) return; state.ready[exId]=!state.ready[exId]; save(); refreshReady(exId); updateProgress(); refreshCards(); }
+/* ================= progression (padlock, driven by the log) ================= */
+// Evidence from the log: how reliably the sensation is coming this week.
+function readiness(exId){
+  const es=logFor(exId), now=Date.now();
+  const wk=es.filter(e=> now-e.t < 7*DAY);
+  const n=wk.length, came=wk.filter(e=>e.s==='yes').length;
+  const required=Math.max(4, Math.ceil(n*2/3));
+  const weekElapsed = es.length ? (now - es[es.length-1].t) >= 6*DAY : false;
+  const ring = n ? Math.min(1, came/required) : 0;
+  return { n, came, required, ring, openable: (n>=6 && came>=required && weekElapsed) };
+}
+const exOrder=()=> DATA.items.filter(it=>it.type==='exercise').map(it=>it.id);
+// mastered = marked ready; current = first not-ready; ahead = the rest (soft lock, still accessible)
+function lockState(exId){ if(state.ready[exId]) return 'mastered'; const first=exOrder().find(id=>!state.ready[id]); return exId===first?'current':'ahead'; }
+function lockStatusHtml(item){
+  const st=lockState(item.id), r=readiness(item.id);
+  let glyph,title,sub,pct;
+  if(st==='mastered'){ glyph='✓'; title='Worked through'; sub='you may move on — tap to review'; pct=100; }
+  else if(st==='current'){ pct=Math.round(r.ring*100);
+    if(r.openable){ glyph='🔓'; title='Ready to move on'; sub='the sensation is coming reliably — tap to confirm'; }
+    else { glyph='🔒'; title='In progress'; sub=r.n?`came on its own in ${r.came} of your last ${r.n} this week — tap to log &amp; assess`:'log each sitting to build your progress — tap to start'; }
+  } else { glyph='🔒'; title='Comes later'; sub='stay with the exercise you are on — tap to look ahead'; pct=0; }
+  return `<button class="lockstat ${st}${(st==='current'&&r.openable)?' ready':''}" data-ex="${item.id}" style="--p:${pct}">`+
+    `<span class="lock-ring"><span class="lock-glyph">${glyph}</span></span>`+
+    `<span class="lock-text"><span class="lock-title">${title}</span><span class="lock-sub">${sub}</span></span></button>`;
+}
+// Self-directed: you can always mark ready; the padlock/log only nudges.
+function markReady(exId){ state.ready[exId]=!state.ready[exId]; save(); updateProgress(); renderLadder(); }
 function updateProgress(){ const exs=DATA.items.filter(it=>it.type==='exercise'); const done=exs.filter(it=>state.ready[it.id]).length;
   fillEl.style.width=(exs.length?Math.round(done/exs.length*100):0)+'%';
   labelEl.textContent=done===0?`Your progress · start with Exercise 1, Heaviness`:`Your progress · ${done} of ${exs.length} exercises worked through`;
@@ -317,13 +350,6 @@ function practiceCardHtml(item){
     `<p><strong>The close.</strong> Say “Arms firm, breathe deeply, eyes open.” Make fists 3–4×, bend the arms, one deep breath, open the eyes.</p>`+
     `<p class="muted">Passive concentration: hold the formula lightly, want nothing, let it come — including nothing.</p>`;
 }
-function critBlock(item){
-  const a=state.crit[item.id]||[false,false,false,false];
-  return `<div class="crit"><span class="crit-label">Tick each as it becomes true — ready to move on when all four are</span><ul>`+
-    DATA.progressionCriteria.map((c,i)=>`<li class="crit-item" data-ex="${item.id}" data-i="${i}"><button class="box ${a[i]?'on':''}">${a[i]?'✓':''}</button><span>${esc(c)}</span></li>`).join('')+
-    `</ul><div class="log-ev" data-ex="${item.id}">${evidenceHtml(item.id)}</div>`+
-    `<button class="ready-btn" data-ex="${item.id}"></button></div>`;
-}
 function card(item){
   const isEx=item.type==='exercise';
   const weekBadge=item.weeks?`Weeks ${item.weeks}`:`Week ${item.week}`;
@@ -337,7 +363,7 @@ function card(item){
   let body;
   if(isEx){
     // within-exercise flow: understand → practise (guided) → practise unaided → assess
-    body = formula+note+caution+prereq + wrap(row('orientation')) + practiceBlock(item) + wrap(row('silence')) + critBlock(item);
+    body = formula+note+caution+prereq + wrap(row('orientation')) + practiceBlock(item) + wrap(row('silence')) + lockStatusHtml(item);
   } else {
     body = formula+note+caution+prereq + wrap(['teaching','orientation','silence'].map(row).filter(Boolean).join(''));
   }
@@ -381,10 +407,8 @@ function renderLadder(){
   ladderEl.querySelectorAll('.card-head[data-toggle]').forEach(h=>h.addEventListener('click',()=>toggleCard(h.dataset.toggle)));
   ladderEl.querySelectorAll('.card-btn[data-ex]:not(.log-btn)').forEach(b=>b.addEventListener('click',()=>openModal(practiceCardHtml(itemById(b.dataset.ex)))));
   ladderEl.querySelectorAll('.log-btn[data-ex]').forEach(b=>b.addEventListener('click',()=>promptLog(b.dataset.ex,false)));
-  ladderEl.querySelectorAll('.log-ev .log-view[data-ex]').forEach(b=>b.addEventListener('click',()=>openLogModal(b.dataset.ex)));
+  ladderEl.querySelectorAll('.lockstat[data-ex]').forEach(b=>b.addEventListener('click',()=>openLogModal(b.dataset.ex)));
   ladderEl.querySelectorAll('.play[data-src]').forEach(b=>b.addEventListener('click',()=>startTrack(b)));
-  ladderEl.querySelectorAll('.crit-item').forEach(li=>li.addEventListener('click',()=>toggleCrit(li.dataset.ex,+li.dataset.i,li.querySelector('.box'))));
-  ladderEl.querySelectorAll('.ready-btn[data-ex]').forEach(b=>b.addEventListener('click',()=>markReady(b.dataset.ex)));
   ladderEl.querySelectorAll('.stage').forEach(b=>b.addEventListener('click',()=>{
     ladderEl.querySelectorAll(`.stage[data-ex="${b.dataset.ex}"]`).forEach(x=>x.classList.remove('on')); b.classList.add('on');
   }));
@@ -396,7 +420,6 @@ function renderLadder(){
     const ex=itemById(b.dataset.ex); const sel=ladderEl.querySelector(`.stage[data-ex="${b.dataset.ex}"].on`); const idx=sel?+sel.dataset.stage:0;
     runSession(buildSleep(ex,idx), ex.title+' · to fall asleep', ex.id, true);
   }));
-  DATA.items.filter(it=>it.type==='exercise').forEach(it=>refreshReady(it.id));
   updateProgress(); refreshCards(); refreshOffline();
 }
 

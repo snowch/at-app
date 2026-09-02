@@ -127,6 +127,27 @@ span.play { cursor: default; opacity: .4; }
 .ready-btn.armed { color: var(--text); border-color: var(--accent); }
 .ready-btn.done { background: linear-gradient(180deg, rgba(120,176,200,.25), rgba(224,170,110,.25)); color: var(--text); border-color: transparent; }
 
+/* padlock progress status (on the card) + progress hub (in the modal) */
+.lockstat { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; margin: 12px 0 4px; padding: 12px; background: var(--bg-elev2); border: 1px solid var(--line); border-radius: 12px; cursor: pointer; }
+.lockstat:hover { background: var(--bg-elev); }
+.lockstat.ready { border-color: var(--accent); }
+.lockstat.ahead { opacity: .8; }
+.lock-ring { position: relative; flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) calc(var(--p,0)*1%), var(--line) 0); }
+.lockstat.mastered .lock-ring, .lockstat.ready .lock-ring { background: linear-gradient(180deg, var(--cool), var(--warm)); }
+.lockstat.ahead .lock-ring { background: var(--line); }
+.lock-glyph { width: 38px; height: 38px; border-radius: 50%; background: var(--bg-elev2); display: grid; place-items: center; font-size: 1.05rem; }
+.lockstat:hover .lock-glyph { background: var(--bg-elev); }
+.lockstat.mastered .lock-glyph, .lockstat.ready .lock-glyph { color: var(--text); }
+.lock-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.lock-title { font-size: .92rem; color: var(--text); }
+.lockstat.ahead .lock-title { color: var(--muted); }
+.lock-sub { font-size: .76rem; color: var(--faint); line-height: 1.4; }
+.crit-guide { list-style: disc; margin: 0 0 4px; padding-left: 1.2em; }
+.crit-guide li { color: var(--muted); font-size: .84rem; margin: 5px 0; line-height: 1.45; }
+.hub-sec { margin: 0 0 16px; }
+.hub-ev { color: var(--faint); font-size: .82rem; margin: 8px 0 10px; line-height: 1.5; }
+.hub-ev strong { color: var(--accent); }
+
 /* practice log */
 .log-btn { margin-top: 8px; }
 .log-ev { margin: 10px 0 2px; font-size: .78rem; color: var(--faint); line-height: 1.5; }

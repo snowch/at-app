@@ -56,9 +56,11 @@ are symmetric and unaffected. This fixes a prior mismatch where the UI said
 - **Neck and shoulders is a suffix, not a rung** — modelled as its own item but conceptually it holds the tail of the sequence; later exercises insert ahead of it. (Session-builder logic to honour this comes with the sequence view.)
 - Shared `progressionCriteria` (the four) render as a per-exercise checklist; `close` renders as the cancellation modal.
 
-## Gating (app)
-- Advance is learner-confirmed against the four criteria (a checklist that *teaches* the criteria), not a single "ready?" button.
-- Minimum one week per exercise is stated; a soft reassess prompt at three weeks. (Time-tracking is a planned refinement; v1 gates on the criteria checklist.)
+## Gating (app) — a soft padlock driven by the log
+- Each exercise card shows a **padlock status** with a progress **ring** (`lockStatusHtml` / `lockState`): **mastered** (marked ready), **current** (ring fills from the log), or **ahead** (🔒). Tapping it opens the **progress hub** (the per-exercise log modal).
+- The ring/openable is **evidence-based** (`readiness`): the sensation coming *on its own* in ~⅔ of a week's logged sittings, with ~6+ sittings and about a week elapsed. When met, the lock shows 🔓 "Ready to move on".
+- **Soft, not hard.** The lock never blocks access — every exercise stays openable/practisable; it only visualises the path and nudges. And advance stays **self-directed**: you can `markReady` any time; the padlock and log only inform.
+- The **four criteria live in the hub as guidance** ("Ready to move on when …"), no longer a tickable checklist — the log evidence replaced the manual ticks.
 - Solar plexus is explicitly `skippable`. Exercise-specific cautions surface on the card and should re-appear at unlock of 3, 5, 6.
 
 ## The close is non-negotiable
@@ -69,7 +71,7 @@ Every guided/timed track ends with the cancellation; the silent-practice track e
 ## Practice log — the fifth step of the session
 The taught session shape is *Position · Settle · Formula · Close · **Log***, and the welcome asks the learner to "keep a short log so you can see your progress." The app makes that real:
 - **Prompt.** A guided session (short or full) ends by offering a 30-second log: *did the sensation come — on its own / partly / not yet* + an optional note. Manual "✎ Log a practice" on each exercise covers unaided sittings; a toolbar "✎ Log" opens the whole history (today's count toward 3×/day, and a day streak).
-- **Feeds progression.** Progression criterion 3 is literally *"consistent in ~two-thirds of sessions over a week."* The log surfaces that evidence in the criteria block — *"came on its own in X of your last Y this week"* — so ticking is honest, not guessed.
+- **Drives progression.** The log *is* the progression tracker (see Gating): the padlock ring and "ready" state derive from *"came on its own in X of your last Y this week."* The old separate 4-checkbox block was removed — its criteria are now guidance inside the same hub, beside the evidence and the sittings.
 - **Privacy.** Stored only in `localStorage` (`at-progress-v1.log`), never uploaded; entries are individually deletable. All user text is HTML-escaped on render.
 
 ## Scripting gotcha — no lone-word first segment
