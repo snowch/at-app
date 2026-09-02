@@ -10,8 +10,13 @@ The one design piece carried intact from the source method: each exercise ships
 **orientation** (hear once) → **guided session** (first days) → **timed cues**
 (structure only, learner supplies the formulae) → **silent practice** (chime ·
 silence · chime · close). The learner ends every stage practising unaided, which
-is what makes the collapsed full sequence possible later. The silent-practice
-track is shared across exercises.
+is what makes the collapsed full sequence possible later.
+
+**Silent practice is a flexible timer, not a fixed track.** Rather than one
+preset ~3:22 recording, the learner taps a length (3/5/10/15/20 min) and the
+session engine runs `buildSilent`: chime · *their* silence · chime · close (a
+generated `chime` clip + the `close` clip). Practice time varies, so the length
+is the learner's. Last-used length is remembered (`state.silentMin`).
 
 **Shared opening (`openingSteps`).** Every guided session — onboarding drill,
 cumulative, and full — opens the same way: **settle into position** (posture:

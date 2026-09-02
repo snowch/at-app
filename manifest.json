@@ -434,6 +434,11 @@
     }
   ],
   "clips": {
+    "chime": {
+      "audio": "audio/clips/chime.m4a?v=768d48c0",
+      "text": "Chime",
+      "durationSec": 3.0
+    },
     "settle": {
       "audio": "audio/clips/settle.m4a?v=6a48895d",
       "text": "Settle into position",

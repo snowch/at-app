@@ -176,6 +176,8 @@ function buildFull(){
   return steps;
 }
 function learnedCount(){ return DATA.fullSession.order.filter(learned).length + (learned('neck-shoulders')?1:0); }
+// Silent practice: chime · your chosen silence · chime · close. Length is the learner's, not fixed.
+function buildSilent(minutes){ return [{key:'chime'},{pause:Math.max(30,Math.round(minutes*60))},{key:'chime'},{pause:2},{key:'close'}]; }
 
 /* ================= offline ================= */
 const isCached=async(u)=>{ try{ return hasCaches&&!!(await caches.match(u)); }catch{ return false; } };
@@ -350,6 +352,12 @@ function practiceCardHtml(item){
     `<p><strong>The close.</strong> Say “Arms firm, breathe deeply, eyes open.” Make fists 3–4×, bend the arms, one deep breath, open the eyes.</p>`+
     `<p class="muted">Passive concentration: hold the formula lightly, want nothing, let it come — including nothing.</p>`;
 }
+function silentBlock(item){
+  const presets=[3,5,10,15,20], sel=state.silentMin||5;
+  return `<div class="silent"><span class="crit-label">Silent practice — unaided</span>`+
+    `<p class="practice-hint">A chime, a silence of your choosing, a chime, then the close. Run the exercise from memory. Tap a length to begin.</p>`+
+    `<div class="silent-row">`+presets.map(m=>`<button class="silent-min${m===sel?' on':''}" data-ex="${item.id}" data-min="${m}">${m} min</button>`).join('')+`</div></div>`;
+}
 function card(item){
   const isEx=item.type==='exercise';
   const weekBadge=item.weeks?`Weeks ${item.weeks}`:`Week ${item.week}`;
@@ -363,7 +371,7 @@ function card(item){
   let body;
   if(isEx){
     // within-exercise flow: understand → practise (guided) → practise unaided → assess
-    body = formula+note+caution+prereq + wrap(row('orientation')) + practiceBlock(item) + wrap(row('silence')) + lockStatusHtml(item);
+    body = formula+note+caution+prereq + wrap(row('orientation')) + practiceBlock(item) + silentBlock(item) + lockStatusHtml(item);
   } else {
     body = formula+note+caution+prereq + wrap(['teaching','orientation','silence'].map(row).filter(Boolean).join(''));
   }
@@ -408,6 +416,10 @@ function renderLadder(){
   ladderEl.querySelectorAll('.card-btn[data-ex]:not(.log-btn)').forEach(b=>b.addEventListener('click',()=>openModal(practiceCardHtml(itemById(b.dataset.ex)))));
   ladderEl.querySelectorAll('.log-btn[data-ex]').forEach(b=>b.addEventListener('click',()=>promptLog(b.dataset.ex,false)));
   ladderEl.querySelectorAll('.lockstat[data-ex]').forEach(b=>b.addEventListener('click',()=>openLogModal(b.dataset.ex)));
+  ladderEl.querySelectorAll('.silent-min[data-ex]').forEach(b=>b.addEventListener('click',()=>{
+    const m=+b.dataset.min; state.silentMin=m; save(); const ex=itemById(b.dataset.ex);
+    runSession(buildSilent(m), ex.title+' · silent practice', ex.id);
+  }));
   ladderEl.querySelectorAll('.play[data-src]').forEach(b=>b.addEventListener('click',()=>startTrack(b)));
   ladderEl.querySelectorAll('.stage').forEach(b=>b.addEventListener('click',()=>{
     ladderEl.querySelectorAll(`.stage[data-ex="${b.dataset.ex}"]`).forEach(x=>x.classList.remove('on')); b.classList.add('on');
