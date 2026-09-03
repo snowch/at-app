@@ -138,8 +138,9 @@ function buildOnboarding(){
     if(cy>0) steps.push({key:'reenter'},{pause:2});             // after a cancel opened the eyes, re-close and settle before repeating
     for(let r=0;r<c.repsPerFormula;r++){ steps.push({key:sideClip('hv_rarm')},{pause:c.formulaPause}); }
     const lastCycle = cy===c.cycles-1;
-    if(lastCycle) endSettleThen(steps,'close');                 // settle, then the final cancel = full close (with the switch phrase)
-    else { endSettleThen(steps,'qcancel'); steps.push({pause:3}); }  // settle, quick cancel (eyes open), brief gap, then re-enter
+    // No long pre-cancel settle here — the drill keeps its brisk rep rhythm (the ~5s after the last rep is enough).
+    if(lastCycle) steps.push({key:'close'});                    // final cancel = full close (with the switch phrase)
+    else steps.push({key:'qcancel'},{pause:3});                 // quick cancel (eyes open), brief gap, then re-enter
   }
   return steps;
 }
