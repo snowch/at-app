@@ -44,6 +44,10 @@ body {
 .offline-btn.wide { width: 100%; margin-top: 14px; padding: 12px; }
 .offline-status { color: var(--faint); font-size: .76rem; }
 
+.update-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 70; display: flex; align-items: center; justify-content: center; gap: 12px; padding: calc(9px + env(safe-area-inset-top)) 14px 9px; background: linear-gradient(180deg, var(--cool), var(--warm)); color: #10141a; font-size: .84rem; box-shadow: 0 2px 12px rgba(0,0,0,.35); }
+.update-bar[hidden] { display: none; }
+.update-bar button { border: none; background: rgba(16,20,26,.88); color: #eaf1f8; border-radius: 99px; padding: 6px 15px; font-size: .82rem; font-weight: 600; cursor: pointer; }
+
 .toolbar { max-width: 660px; margin: 6px auto 0; padding: 0 16px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 .tool { background: rgba(143,184,204,.07); border: 1px solid rgba(143,184,204,.30); color: var(--accent); border-radius: 99px; padding: 7px 14px; font-size: .8rem; cursor: pointer; white-space: nowrap; }
 .tool:hover { background: rgba(143,184,204,.16); }

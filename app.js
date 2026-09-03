@@ -474,5 +474,14 @@ async function init(){
     if(!state.safetyAck) safetyGate();
   }catch(e){ ladderEl.innerHTML=`<p class="loading">Could not load (${e.message}).</p>`; }
 }
-if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(e=>console.warn(e))); }
+if('serviceWorker' in navigator){
+  let refreshing=false;
+  const hadController=!!navigator.serviceWorker.controller;   // false on first-ever install → don't prompt
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    if(refreshing || !hadController) return;
+    const bar=$('updateBar'); if(bar) bar.hidden=false;       // a freshly-deployed version has taken over
+  });
+  const rf=$('updateRefresh'); if(rf) rf.onclick=()=>{ refreshing=true; location.reload(); };
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(e=>console.warn(e)));
+}
 init();
