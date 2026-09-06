@@ -187,10 +187,16 @@ async function saveForOffline(){ offlineAll.disabled=true; let n=0; for(const u 
 async function refreshOffline(){ if(!hasCaches||!offlineUrls.length){ offlineBox.hidden=true; return; } offlineBox.hidden=false; let c=0; for(const u of offlineUrls) if(await isCached(u)) c++; if(c===offlineUrls.length){ offlineAll.textContent='✓ Available offline'; offlineAll.disabled=true; } else offlineSt.textContent=`${offlineUrls.length} recordings`; }
 
 /* ================= modals ================= */
-function openModal(html){ modalBody.innerHTML=html; modal.hidden=false; }
+// Push a history entry when a modal opens so the device Back button closes it
+// (not navigate away to a blank page). Manual dismiss routes through history.back()
+// too, so both converge on one popstate handler.
+let modalPushed=false;
+function openModal(html){ modalBody.innerHTML=html; modal.hidden=false; if(!modalPushed){ modalPushed=true; history.pushState({sheet:true},''); } }
 function closeModal(){ modal.hidden=true; }
-$('modalClose').onclick=closeModal; modal.onclick=(e)=>{ if(e.target===modal) closeModal(); };
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+function dismissModal(){ if(modalPushed) history.back(); else closeModal(); }
+window.addEventListener('popstate',()=>{ modalPushed=false; if(!modal.hidden) closeModal(); });
+$('modalClose').onclick=dismissModal; modal.onclick=(e)=>{ if(e.target===modal) dismissModal(); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !modal.hidden) dismissModal(); });
 $('closeBtn').onclick=()=>openModal(`<h3>The close</h3><p>Never skip this. The practice genuinely slows your body down; the close brings it back up before you stand, so you don't feel groggy or lightheaded.</p><ol>${DATA.close.map(s=>`<li>${esc(s)}</li>`).join('')}</ol><p class="muted">The one exception: in bed to fall asleep — then omit the close and let yourself drift.</p>`);
 $('principleBtn').onclick=()=>openModal(`<h3>Passive concentration</h3><p>${esc(DATA.corePrinciple)}</p><p>You are not commanding the body or checking whether it worked. Hold the formula lightly and let whatever happens happen — including nothing. The sensations arrive only when you stop requiring them.</p>`);
 
